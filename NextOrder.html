@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="root.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="calendar.css">
+    <link rel="stylesheet" href="order.css">
+    <link rel="stylesheet" href="storeTemplate.css"> 
+    <title>Next Order</title>
+</head>
+<body>
+    <main>
+        <section id="top__section">
+            <h1 class="main__title">NEXT ORDER</h1>
+        </section>
+            <div class="dropdown__menu">
+            <div class="menu__container">
+                <div class="menu__selector menu__make__order"><h1>Place Order</h1></div>
+                <div class="menu__selector menu__adjust__products"><h1>Store Template</h1></div>
+                <div class="menu__pulldown"></div>
+            </div>
+        </div>
+        <section class="order-page__section">
+            <div class="order__form__main__container">
+            <div class="order__form__container" id="order__form__container">
+                <div class="order__form__area">
+                        
+                        <label for="RMF-data-dump">Paste RMF order page</label>
+                        <textarea name="RMF-data-dump" class="rmf-data-dump" placeholder="Paste RMF page here!" id="rmf-data-dump" cols="30" rows="10"></textarea>
+                        <label class="input__order__invoiced" for="previous-invoiced">All food orders invoiced?</label>
+                        <div id="radio-container">
+                                <label class="radio-label" for="previous-invoiced">Yes</label>
+                                <input class="radio-button" type="radio" id="previous-invoiced-yes" name="previous-invoiced">
+                                <label class="radio-label" for="previous-invoiced">No</label>
+                                <input class="radio-button" type="radio" id="previous-invoiced-no" name="previous-invoiced">
+                        </div>
+                        <div class="received-today__container">
+                            <label class="received-today__label" for="received-today">Received my order today?</label>
+                            <input class="check-box" type="checkbox" id="received-today" name="received-today">
+                        </div>
+                        
+                        <label id="date-label" for="date">Order Date</label>
+                        <div>
+                            <input type="text" required="true" id="date-input" name="date-input">
+                            <button id="date-button">📆</button>
+                        </div>
+
+                            <div id="calendar-container">
+                                <div id="calendar-body">
+                                    <div id="calendar-header">
+                                        <div class="in-header-container">
+                                            <h2 id="calendar-header-text">2025 June</h2>
+                                        </div>
+                                        <div class="in-header-container">
+                                            <div class="arrow-container"></div>
+                                            <div class="arrow-container">
+                                                <div id="arrow-up"></div>
+                                            </div>
+                                            <div class="arrow-container">
+                                                <div id="arrow-down"></div>    
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <table id="day-table">
+                                        <tr>
+                                            <th>Mon</th>
+                                            <th>Tue</th>
+                                            <th>Wed</th>
+                                            <th>Thu</th>
+                                            <th>Fri</th>
+                                            <th>Sat</th>
+                                            <th>Sun</th>
+                                        </tr>
+                                        <tr>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                        </tr>
+                                        <tr>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                        </tr>
+                                        <tr>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                        </tr>
+                                        <tr>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                        </tr>
+                                        <tr>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                        </tr>
+                                        <tr>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                            <td>na</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        
+                        <label for="previous-sales">Last Week's Sales:</label>
+                        <input type="text" required="true" id="previous-sales" name="previous-sales">
+                      
+                        <label for="sales-forecast">Weekly Sales Forecast:</label>
+                        <input type="text" id="sales-forecast" name="sales-forecast" required="true">
+
+                        <button id="create-button" type="button">Create</button>
+                        
+                        <div id="warning-message"></div>
+                </div>
+                <div class="generated__order-page__main__container">
+                    <h1 class="generated__order-page__main__title"></h1>
+                    <div class="output__option-bar">
+                        <button id="output__option-bar__print__button" class="output__option-bar__button">Print Order</button>
+                        <button id="output__option-bar__update__button" class="output__option-bar__button">Update</button>
+                        <button id="output__option-bar__copy__button" class="output__option-bar__button">Copy Script</button>
+                        <input type="text" id="output__option-bar__search-field">
+                        <button id="output__option-bar__add__button" class="output__option-bar__button">Add</button>
+                        
+                    </div>
+                    <div class="order__table__page__container">
+                        <div class="order__table__page-output-order-header"></div>
+                        <div class="order__table__page-output-order"></div>
+                        <div class="order__table__page-side-selector__screen"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+        </section>
+        <section class="inventory-section__inactive">
+            <div class="inventory__main-container">
+            <div class="inventory__start-menu__active">
+                    <div id="inventory__start-menu__create-button" class="inventory__start-menu__selector">
+                        <h1>Create New</h1>
+                        </div>
+                    <div id="inventory__start-menu__edit-button" class="inventory__start-menu__selector">
+                        <h1>Edit</h1>
+                    </div>
+                </div> 
+                <!-- Create screen -->
+                <div class="create-store-template__form__inactive">
+                    <label for="store-name__input-field">Enter Store Name</label>
+                    <input class="template__field" type="text" id="store-name__input-field">
+                    <div class="previous-template-password__container__inactive">
+                        <label class="previous-template-password-label" for="previous-template-password">Previous Password</label>
+                        <input class="template__field" type="password" id="previous-template-password">
+                    </div>
+                    <label for="template-password">Password</label>
+                    <input class="template__field" type="password" id="template-password">
+                    <label for="confirm-template-password">Confirm Password</label>
+                    <input class="template__field" type="password" id="confirm-template-password">
+                    <div class="template__next-button__container">
+                        <button class="template__next-button">Next</button>
+                    </div>
+                </div>
+
+                <div class="store__open-times__form__inactive">
+                    <h1 class="store__open-times__form-header">Farnborough Express</h1>
+                    <h1 class="store__open-times__form-header">Store Details:</h1>
+                    <div class="weekday__main__container"></div>
+                </div>
+                <!-- Edit screen -->
+                <div class="edit-store-template__form__inactive">
+                    <h2 id="store-name__edit-template__header">Store:</h2>
+                    <label for="edit-template-password">Password</label>
+                    <input class="template__field" type="password" id="edit-template-password">
+                    <label for="edit-confirm-template-password">Confirm Password</label>
+                    <input class="template__field" type="password" id="edit-confirm-template-password">
+                    <div class="template__logn-button__container">
+                        <button class="template__login-button">Login</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    <script src="productUsage.js"></script> 
+    <script src="appState.js"></script> 
+    <script src="functions.js"></script>
+    <script src="orderRequestForm.js"></script>
+    <script src="OrderPageButtons.js"></script>
+    <script src="calendarMonthMap.js"></script>
+    <script src="calendar.js"></script>
+    <script src="DeliveryReportHarvest.js"></script> 
+    <script src="searchSideBar.js"></script>
+    <script src="storeTemplateScreen.js"></script>
+    <script src="storePreset.js"></script>
+
+</body>
+</html>
