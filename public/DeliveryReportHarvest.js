@@ -1,7 +1,4 @@
-// let discoveredProducts = [];
 function reportHarvest (report) {
-
-    // let productPattern = /(?<productCode>\d{4,})\t(?<product>[\w\s\(\)\-:&+\/"\.]{5,40})\t(?<case>CASE-\s*[\dxX\.kgKGL]+\s*\w*|[-\d\.kgKG]+|BT\s-\s[\d\.]+L*)\t\n\d+\n\n\d+\.\d+\t\n(?<productPrice>\d+\.\d+)\n\t\n(?<previousOrderQuantity>\-*\d{1,3}\.*\d*)\s\((?<previousOrderQuantityDay>\d{2})\s(?<previousOrderQuantityMonth>\w{3})\s(?<previousOrderQuantityYear>\d{4})\)\s*[*]*\n\d{2}\s\w{3}\s\d{4}(?:\s\*\n|\n)(?<previousWeeksUsage>\-*\d+\.*\d*)(?:\s\*\n|\n)(?<onHand>\-*\d+\.*\d*)(?:\s\*\n|\n)\-*\d+\.*\d*(?:\s\*)*/g
 
     let productPattern = /(?<productCode>\d{4,})\t(?<product>[\w\s\(\)\-:&+\/"\.]{5,40})\t(?<case>(CASE|BT)[-\s\w\.]{2,10})\t\s(?<quantity>\d{1,2})\s{2}(?<orQ>[-\d.]{4,5})\s{2}(?<productPrice>[-\d.,]{4,10})\D{1,3}((?<previousOrderQuantity>[\d.,]{1,8})\D\((?<previousOrderQuantityDay>\d{2})\D(?<previousOrderQuantityMonth>\w{3})\D(?<previousOrderQuantityYear>\d{4})\)(?<br>[\s*]+)(?<prevWEnding>\d{2}\D\w{3}\D\d{4})\k<br>(?<previousWeeksUsage>[-\d.]{4,6})\k<br>(?<onHand>[-\d.]{4,6})\k<br>(?<currOnHand>[-\d.,]{4,8})|(?<contingency>[*\s]{10}))/g
 

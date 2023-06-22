@@ -221,7 +221,30 @@
     <script src="DeliveryReportHarvest.js"></script> 
     <script src="searchSideBar.js"></script>
     <script src="storeTemplateScreen.js"></script>
-    <script src="storePreset.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyA0SAxW2KV5h2y1CAjexLdjNKJO70GNdoE",
+          authDomain: "next-order-4d02b.firebaseapp.com",
+          databaseURL: "https://next-order-4d02b-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "next-order-4d02b",
+          storageBucket: "next-order-4d02b.appspot.com",
+          messagingSenderId: "1019190887523",
+          appId: "1:1019190887523:web:4ac80d9b6781b6a09ea456",
+          measurementId: "G-RD03LGBJC8"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
 
 </body>
 </html>

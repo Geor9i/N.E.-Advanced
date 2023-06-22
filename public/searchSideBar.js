@@ -1,46 +1,32 @@
 function generateSideBar (productsOnOrder) {
 
     //Generate side bar items
-    // let sideScreenElement = document.querySelector(".order__table__page-side-selector__screen");
+   
     let sideTableElement = document.createElement("table")
-    
     sideTableElement.id = "side-table__search";
     sideScreenElement.appendChild(sideTableElement)
 
     for (let product in productsOnOrder) {
 
         if (product !== "counter") {
-            let sideTableRow = document.createElement("tr");
-            sideTableRow.className = "side-table-row"
 
-            let productNameTd = document.createElement("td");
-            productNameTd.textContent = `${product}`;
-            productNameTd.className = "side-product-td"
-            let productValueTd = document.createElement("td");
-            productValueTd.className = "side-value-td";
-            let productValueInputTd = document.createElement("h3");
-            productValueInputTd.className = "side-input-value-td"
-            productValueInputTd.textContent = `0`
+            let sideTableRow = domGen(`
+                <tr .side-table-row>
+                    <td .side-product-td>${product}
+                    </td>
+                    <td .side-value-td>
+                        <h3 .side-input-value-td>0
+                        </h3>
+                        <div .side-menu__value-button__container>
+                            <button .side-menu-value-button>+
+                            </button>
+                            <button .side-menu-value-button>-
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `)
 
-            let sideMenuValueButtonContainer = document.createElement("div");
-            sideMenuValueButtonContainer.className = "side-menu__value-button__container";
-
-            let sideMenuIncrementButton = document.createElement("button");
-            sideMenuIncrementButton.className = "side-menu-value-button";
-            sideMenuIncrementButton.textContent = "+";
-
-            let sideMenuDecrementButton = document.createElement("button");
-            sideMenuDecrementButton.textContent = "-";
-            sideMenuDecrementButton.className = "side-menu-value-button";
-
-            sideMenuValueButtonContainer.appendChild(sideMenuIncrementButton);
-            sideMenuValueButtonContainer.appendChild(sideMenuDecrementButton);
-           
-            productValueTd.appendChild(productValueInputTd)
-            productValueTd.appendChild(sideMenuValueButtonContainer)
-
-            sideTableRow.appendChild(productNameTd)
-            sideTableRow.appendChild(productValueTd)
             sideTableElement.appendChild(sideTableRow)
             if (productsOnOrder[product].order > 0) {
                 sideTableRow.classList.add("hidden")

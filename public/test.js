@@ -15,6 +15,6 @@
 // let str = '5 (16 Jun 2023) *';
 // console.log(str.split('(').splice(1,1).join('').split(')').splice(0,1).join(''));
 
-if (localStorage) {
-    console.log('yes');
-}
+// if (localStorage) {
+//     console.log('yes');
+// }
