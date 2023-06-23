@@ -46,7 +46,7 @@ function calendar (year,month) {
             }
         }
     }
-// Get the weekday for the first day of the selec year
+// Get the weekday for the first day of the selected year
     function getFirstWeekDayYear(year) {
         //1950 Jan 01 - Sunday
     let firstWeekDayOfYear = daysOfWeek[6];

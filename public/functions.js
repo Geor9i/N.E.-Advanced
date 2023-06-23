@@ -50,24 +50,16 @@ function nextOrder(
   let dataTableHeader = domGen(`
     <table .data-table-header>
         <tr .product-table-header-row>
-            <th .data-table-header__product-th>Product
-            </th>
-            <th data-table-header__order-th>Order
-            </th>
-            <th .data-table-header__weekly-usage-th>Weekly Usage
-            </th>
-            <th .data-table-header__price-th>Price
-            </th>
-            <th .data-table-header__in-stock-th>In Stock
-            </th>
-            <th .data-table-header__stock-on-1-th>${weekDays[orderInvoiceDate.getDay() - 1].slice(0, 3)}
-            </th>
+            <th .data-table-header__product-th>Product</th>
+            <th data-table-header__order-th>Order</th>
+            <th .data-table-header__weekly-usage-th>Weekly Usage</th>
+            <th .data-table-header__price-th>Price</th>
+            <th .data-table-header__in-stock-th>In Stock</th>
+            <th .data-table-header__stock-on-1-th>${weekDays[orderInvoiceDate.getDay() - 1].slice(0, 3)}</th>
             <th .data-table-header__stock-on-2-th>${weekDays[
                 findDeliveryDate(orderInvoiceDate, true).getDay() - 1]
-                .slice(0,3)}
-            </th>
-            <th .data-table-header__keep-th>Keep
-            </th>
+                .slice(0,3)}</th>
+            <th .data-table-header__keep-th>Keep</th>
         </tr>
     </table>
   `)
@@ -77,8 +69,7 @@ function nextOrder(
 
   let dataTable = domGen(`
   <table .data-table>
-  <tbody .product-table-tbody>
-  </tbody>
+  <tbody .product-table-tbody></tbody>
   </table>
   `)
 
@@ -507,12 +498,12 @@ function domGen(domString) {
 
   function hierarchy(domString) {
     let regex = {
-      tag: /([<\/]{1,2})(?<tag>[a-z]{1,10})/,
+      tag: /([<\/]{1,2})(?<tag>[a-z1-6]{1,10})/,
       openTag: /<[^\/].+?>/g,
       closeTag: /<\/.+?>/g,
-      class: /\.[-_0-9a-z]+/g,
+      class: /(?!\.\w+[\$\{\}<]+)\.[-_0-9a-z]+/g,
       id: /\#[-_0-9a-zA-Z]+/g,
-      text: />(?<text>[^\n]+)/,
+      text: />(?<text>[^\n<]+)/,
       attribute: /(?<attribute>[a-z]{1,15})="(?<content>[-\(\)$\{\}\w]+)"/g,
       function: /\((?<name>[\w]+)\((?<arguments>[<>\w,\s]+)\)\)/,
     };
@@ -520,26 +511,9 @@ function domGen(domString) {
     let tagArr = [];
     for (let i = 0; i < domString.length; i++) {
       //Matched an opening tag
-      if (domString[i].match(regex.function) !== null) {
-        let funcObj = domFunctions();
-        let fName = domString[i].match(regex.function).groups.name;
-        //if the function exists
-        if (funcObj[fName]) {
-          let fArgs = domString[i].match(regex.function).groups.arguments;
-          if (fArgs) {
-            fArgs = fArgs.split(",").map((el) => el.trim());
-            if (fArgs.length === 1) {
-              fArgs = fArgs[0].slice(1, fArgs.length - 2);
-              let elementIndex = elementLastIndex(
-                tagArr,
-                (el) => el.tag.tagName.toLowerCase() === fArgs
-              );
-              funcObj[fName](tagArr[elementIndex].tag);
-            }
-          }
-        }
-        //OR Matched an opening tag
-      } else if (domString[i].match(regex.openTag) !== null) {
+     
+      
+      if (domString[i].match(regex.openTag) !== null) {
         let tagString = domString[i].match(regex.tag).groups.tag;
         let tag = document.createElement(tagString);
 
@@ -578,7 +552,31 @@ function domGen(domString) {
         tagArr.push({ tag, open: true });
 
         // OR Matched a closing tag
-      } else if (domString[i].match(regex.closeTag) !== null) {
+      } 
+
+      if (domString[i].match(regex.function) !== null) {
+        let funcObj = domFunctions();
+        let fName = domString[i].match(regex.function).groups.name;
+        //if the function exists
+        if (funcObj[fName]) {
+          let fArgs = domString[i].match(regex.function).groups.arguments;
+          if (fArgs) {
+            fArgs = fArgs.split(",").map((el) => el.trim());
+            if (fArgs.length === 1) {
+              fArgs = fArgs[0].slice(1, fArgs.length - 2);
+              let elementIndex = elementLastIndex(
+                tagArr,
+                (el) => el.tag.tagName.toLowerCase() === fArgs
+              );
+              funcObj[fName](tagArr[elementIndex].tag);
+            }
+          }
+        }
+        //OR Matched an opening tag
+      } 
+
+
+      if (domString[i].match(regex.closeTag) !== null) {
         let closeTag = domString[i].match(regex.tag).groups.tag;
         // let previousTag = tagArr[tagArr.length - 1].tag.tagName.toLowerCase();
         let previousTagIsOpen = tagArr[tagArr.length - 1].open;
@@ -594,10 +592,135 @@ function domGen(domString) {
         }
         tagArr.push({ tag: parent, open: false });
       }
+  
     }
     return tagArr[0].tag;
-  }
 }
+}
+
+// /**
+//  *
+//  * @param {*} domString pseudo html to be converted to a DOM tree
+//  * @param {*} parent Parent element of DOM tree
+//  */
+// function domGen(domString) {
+//   domString = domString
+//     .split("\n")
+//     .filter((el) => {
+//       let pattern = /[^\s\t\n]+/;
+//       let pass = pattern.test(el);
+//       if (pass) {
+//         return true;
+//       }
+//       return false;
+//     })
+//     .map((el) => el.trim());
+
+//   let structure = hierarchy(domString);
+//   return structure;
+
+//   function elementLastIndex(arr, predicate) {
+//     for (let i = arr.length - 1; i >= 0; i--) {
+//       if (predicate(arr[i])) {
+//         return i;
+//       }
+//     }
+//     return -1;
+//   }
+
+//   function hierarchy(domString) {
+//     let regex = {
+//       tag: /([<\/]{1,2})(?<tag>[a-z]{1,10})/,
+//       openTag: /<[^\/].+?>/g,
+//       closeTag: /<\/.+?>/g,
+//       class: /\.[-_0-9a-z]+/g,
+//       id: /\#[-_0-9a-zA-Z]+/g,
+//       text: />(?<text>[^\n]+)/,
+//       attribute: /(?<attribute>[a-z]{1,15})="(?<content>[-\(\)$\{\}\w]+)"/g,
+//       function: /\((?<name>[\w]+)\((?<arguments>[<>\w,\s]+)\)\)/,
+//     };
+
+//     let tagArr = [];
+//     for (let i = 0; i < domString.length; i++) {
+//       //Matched an opening tag
+//       if (domString[i].match(regex.function) !== null) {
+//         let funcObj = domFunctions();
+//         let fName = domString[i].match(regex.function).groups.name;
+//         //if the function exists
+//         if (funcObj[fName]) {
+//           let fArgs = domString[i].match(regex.function).groups.arguments;
+//           if (fArgs) {
+//             fArgs = fArgs.split(",").map((el) => el.trim());
+//             if (fArgs.length === 1) {
+//               fArgs = fArgs[0].slice(1, fArgs.length - 2);
+//               let elementIndex = elementLastIndex(
+//                 tagArr,
+//                 (el) => el.tag.tagName.toLowerCase() === fArgs
+//               );
+//               funcObj[fName](tagArr[elementIndex].tag);
+//             }
+//           }
+//         }
+//         //OR Matched an opening tag
+//       } else if (domString[i].match(regex.openTag) !== null) {
+//         let tagString = domString[i].match(regex.tag).groups.tag;
+//         let tag = document.createElement(tagString);
+
+//         //Find and assign attributes
+
+//         //if Class is found
+//         if (domString[i].match(regex.class)) {
+//           let classList = domString[i]
+//             .match(regex.class)
+//             .map((el) => el.slice(1));
+//           tag.classList.add(...classList);
+//         }
+
+//         //If ID is found
+//         if (domString[i].match(regex.id)) {
+//           let id = domString[i].match(regex.id).map((el) => el.slice(1));
+//           tag.id = id;
+//         }
+
+//         //If innerText is found
+//         if (domString[i].match(regex.text)) {
+//           let text = domString[i].match(regex.text).groups.text;
+//           tag.textContent = text;
+//         }
+
+//         //if Attribute is discovered
+//         if (domString[i].match(regex.attribute)) {
+//           let match;
+//           while ((match = regex.attribute.exec(domString[i])) !== null) {
+//             let attribute = match.groups.attribute;
+//             let content = match.groups.content;
+//             tag.setAttribute(attribute, content);
+//           }
+//           regex.attribute.lastIndex = 0;
+//         }
+//         tagArr.push({ tag, open: true });
+
+//         // OR Matched a closing tag
+//       } else if (domString[i].match(regex.closeTag) !== null) {
+//         let closeTag = domString[i].match(regex.tag).groups.tag;
+//         // let previousTag = tagArr[tagArr.length - 1].tag.tagName.toLowerCase();
+//         let previousTagIsOpen = tagArr[tagArr.length - 1].open;
+//         let parentTagIndex = elementLastIndex(
+//           tagArr,
+//           (el) => el.tag.tagName.toLowerCase() === closeTag && el.open
+//         );
+//         let children = tagArr.splice(parentTagIndex).map((el) => (el = el.tag));
+//         let parent = children.shift();
+
+//         for (let i = 0; i < children.length; i++) {
+//           parent.appendChild(children[i]);
+//         }
+//         tagArr.push({ tag: parent, open: false });
+//       }
+//     }
+//     return tagArr[0].tag;
+//   }
+// }
 
 //get weekdays
 function getWeekDay(index) {
@@ -646,33 +769,25 @@ function productTableConstructor(currentOrderProducts, product, append = true) {
 
     let productElementTr = domGen(`
         <tr .product-table-tr #${currentOrderProducts[product].count}__product>
-            <td .product-name-td>${product}
-            </td>
+            <td .product-name-td>${product}</td>
 
             <td .order-quantity-td>
                 <h3 .order-quantity-value>${currentOrderProducts[product].order}
                 </h3>
                 <div .value-button__container>
-                <button .value-button>-
-                </button>
-                <button .value-button>+
-                </button>
+                <button .value-button>-</button>
+                <button .value-button>+</button>
                 </div>
             </td>
-            <td .product-usage-td>${currentOrderProducts[product].usage}
-            </td>
-            <td .product-price-td>${currentOrderProducts[product].price}
-            </td>
-            <td .product-onhand-td>${currentOrderProducts[product].onHand}
-            </td>
-            <td .order-day-onhand-td>${currentOrderProducts[product].stockOnOrderDay}
-            </td>
-            <td .post-delivery-quantity-td>${currentOrderProducts[product].nextOrderDayOnHand}
-            </td>
+            <td .product-usage-td>${currentOrderProducts[product].usage}</td>
+            <td .product-price-td>${currentOrderProducts[product].price}</td>
+            <td .product-onhand-td>${currentOrderProducts[product].onHand}</td>
+            <td .order-day-onhand-td>${currentOrderProducts[product].stockOnOrderDay}</td>
+            <td .post-delivery-quantity-td>${currentOrderProducts[product].nextOrderDayOnHand}</td>
             <td .keep-checkbox-td>
                 <input .order__checkbox type="checkbox" checked="true">
+                </input>
             </td>
-
         </tr>
     `);
 

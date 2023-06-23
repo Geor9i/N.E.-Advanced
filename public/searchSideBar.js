@@ -12,16 +12,12 @@ function generateSideBar (productsOnOrder) {
 
             let sideTableRow = domGen(`
                 <tr .side-table-row>
-                    <td .side-product-td>${product}
-                    </td>
+                    <td .side-product-td>${product}</td>
                     <td .side-value-td>
-                        <h3 .side-input-value-td>0
-                        </h3>
+                        <h3 .side-input-value-td>0</h3>
                         <div .side-menu__value-button__container>
-                            <button .side-menu-value-button>+
-                            </button>
-                            <button .side-menu-value-button>-
-                            </button>
+                            <button .side-menu-value-button>+</button>
+                            <button .side-menu-value-button>-</button>
                         </div>
                     </td>
                 </tr>
