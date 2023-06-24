@@ -164,7 +164,7 @@ cursor: pointer;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 15rem;
+    height: auto;
     grid-gap: 5px;
     grid-template-columns: repeat(7, 1fr);
     background-color: rgb(255, 255, 255);
@@ -179,7 +179,7 @@ cursor: pointer;
     justify-content: flex-start;
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: 20rem;
     border: 1px solid black;
     background-color: rgb(73, 73, 73);
     text-align: center;
@@ -314,7 +314,51 @@ cursor: pointer;
     margin-right: 10px;
 }
 
-/* ANALYSIS CONTAINER */
+    .delivery-day-info__container__inactive {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 10rem;
+        opacity: 0;
+    }
+    .delivery-day-info__container__active {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    .delivery-day-arrival-time-text {
+        display: inline-block;
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .delivery-arrival-selector {
+        text-align: center;
+        margin:0;
+        width: 100%;
+        background-color: rgb(80, 80, 80);
+    }
+
+    .delivery-arrival--weekday-selector {
+        text-align: center;
+        margin-bottom: 5px;
+        margin:0;
+        width: 100%;
+        background-color: rgb(80, 80, 80);
+    }
+
+   
+    .order-cutoff-details__container, .delivery-day-eta__container {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* ANALYSIS CONTAINER */
 
 .analysis__container {
     width: 100%;
@@ -335,6 +379,9 @@ cursor: pointer;
     }
     
     .analysis__inner-dropdown {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         height: 0rem;
         overflow: hidden;
@@ -343,18 +390,30 @@ cursor: pointer;
 
     .analysis__inner-content {
         display: flex;
+        flex-direction: column;
+        width: 100%;
         height: auto;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
     }
+
+    .analysis__inner-content label {
+        font-size: 1.5rem;
+        color: black;
+    }
     .analysis__inner-content-input {
-        width: 50%;
-        height: 2rem;
+        background-color: black;
+        color: white;
+        border-radius: 2%;
+        margin: 1rem;
+        margin-bottom: 0;
+        width: 30%;
+        height: 5rem;
     }
     .analysis__inner-content-button {
-
-        width: 2rem;
-        height: 1rem;
+        width: 30%;
+        height: 2rem;
+        cursor: pointer;
     }
 
 /* Edit Template */

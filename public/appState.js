@@ -208,42 +208,28 @@ makeAnOrderButtonElement.addEventListener("click", () => {
 
     function displayOrderWarning() {
       return new Promise((resolve, reject) => {
+
+        
       dropdownMenuElement.className = 'dropdown__menu';
       headerBarElement.removeEventListener('click', headerBarDropdown);
       pullDownElement.removeEventListener('click', headerBarDropdown);
 
-      let pageCover = document.createElement('div');
-      pageCover.className = 'page-cover';
-
-      let warningMessageContainer = document.createElement('div');
-      warningMessageContainer.className = 'warning-message-container';
-      
-      let warningMesageTextContainer = document.createElement('div');
-      warningMesageTextContainer.className = 'warning-message-text-container';
-      let warningP1 = document.createElement('p');
-      warningP1.className = 'warning-message-text';
-      warningP1.textContent = 'Are you sure ?'
-     
-      warningMesageTextContainer.appendChild(warningP1);
-
-      let warningMesageButtonContainer = document.createElement('div');
-      warningMesageButtonContainer.className = 'warning-message__button-container';
-
-      let warningMesageButtonYes = document.createElement('button');
-      warningMesageButtonYes.textContent = 'Yes';
-      warningMesageButtonYes.className = 'warning-message__button';
-      let warningMesageButtonCancel = document.createElement('button');
-      warningMesageButtonCancel.textContent = 'Cancel';
-      warningMesageButtonCancel.className = 'warning-message__button';
-
-      warningMesageButtonContainer.appendChild(warningMesageButtonYes);
-      warningMesageButtonContainer.appendChild(warningMesageButtonCancel);
-
-      warningMessageContainer.appendChild(warningMesageTextContainer);
-      warningMessageContainer.appendChild(warningMesageButtonContainer);
-      pageCover.appendChild(warningMessageContainer);
+      let pageCover = domGen(`
+        <div .page-cover>
+          <div .warning-message-container>
+            <div .warning-message-text-container>
+            <p .warning-message-text>Are you sure ?</p>
+            </div>
+            <div .warning-message__button-container>
+            <button .warning-message__button>Yes</button>        
+            <button .warning-message__button>Cancel</button>        
+            </div>
+          </div>
+        </div>
+        `) 
 
       orderSectionElement.insertBefore(pageCover, orderSectionElement.firstChild);
+      let warningMessageContainer = document.querySelector('.warning-message-container')
       
       warningMessageContainer.addEventListener('click', (e) => {
         if (e.target.classList.contains('warning-message__button') && e.target.textContent === 'Yes') {

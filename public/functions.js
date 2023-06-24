@@ -460,7 +460,27 @@ function domFunctions() {
       for (let i = 0; i < 24; i++) {
         let option = document.createElement("option");
         option.textContent = i < 10 ? `0${i}:00` : `${i}:00`;
+
+        let option2 = document.createElement("option");
+        option2.textContent = i < 10 ? `0${i}:15` : `${i}:15`;
+        
+        let option3 = document.createElement("option");
+        option3.textContent = i < 10 ? `0${i}:30` : `${i}:30`;
+        
+        let option4 = document.createElement("option");
+        option4.textContent = i < 10 ? `0${i}:45` : `${i}:45`;
         select.appendChild(option);
+        select.appendChild(option2);
+        select.appendChild(option3);
+        select.appendChild(option4);
+      }
+    },
+    generateWeekdays(select) {
+      for (let i = 0; i < 7; i++) {
+        let option = document.createElement("option");
+        option.textContent = getWeekDay(i);
+        select.appendChild(option);
+        
       }
     },
   };
@@ -597,130 +617,6 @@ function domGen(domString) {
     return tagArr[0].tag;
 }
 }
-
-// /**
-//  *
-//  * @param {*} domString pseudo html to be converted to a DOM tree
-//  * @param {*} parent Parent element of DOM tree
-//  */
-// function domGen(domString) {
-//   domString = domString
-//     .split("\n")
-//     .filter((el) => {
-//       let pattern = /[^\s\t\n]+/;
-//       let pass = pattern.test(el);
-//       if (pass) {
-//         return true;
-//       }
-//       return false;
-//     })
-//     .map((el) => el.trim());
-
-//   let structure = hierarchy(domString);
-//   return structure;
-
-//   function elementLastIndex(arr, predicate) {
-//     for (let i = arr.length - 1; i >= 0; i--) {
-//       if (predicate(arr[i])) {
-//         return i;
-//       }
-//     }
-//     return -1;
-//   }
-
-//   function hierarchy(domString) {
-//     let regex = {
-//       tag: /([<\/]{1,2})(?<tag>[a-z]{1,10})/,
-//       openTag: /<[^\/].+?>/g,
-//       closeTag: /<\/.+?>/g,
-//       class: /\.[-_0-9a-z]+/g,
-//       id: /\#[-_0-9a-zA-Z]+/g,
-//       text: />(?<text>[^\n]+)/,
-//       attribute: /(?<attribute>[a-z]{1,15})="(?<content>[-\(\)$\{\}\w]+)"/g,
-//       function: /\((?<name>[\w]+)\((?<arguments>[<>\w,\s]+)\)\)/,
-//     };
-
-//     let tagArr = [];
-//     for (let i = 0; i < domString.length; i++) {
-//       //Matched an opening tag
-//       if (domString[i].match(regex.function) !== null) {
-//         let funcObj = domFunctions();
-//         let fName = domString[i].match(regex.function).groups.name;
-//         //if the function exists
-//         if (funcObj[fName]) {
-//           let fArgs = domString[i].match(regex.function).groups.arguments;
-//           if (fArgs) {
-//             fArgs = fArgs.split(",").map((el) => el.trim());
-//             if (fArgs.length === 1) {
-//               fArgs = fArgs[0].slice(1, fArgs.length - 2);
-//               let elementIndex = elementLastIndex(
-//                 tagArr,
-//                 (el) => el.tag.tagName.toLowerCase() === fArgs
-//               );
-//               funcObj[fName](tagArr[elementIndex].tag);
-//             }
-//           }
-//         }
-//         //OR Matched an opening tag
-//       } else if (domString[i].match(regex.openTag) !== null) {
-//         let tagString = domString[i].match(regex.tag).groups.tag;
-//         let tag = document.createElement(tagString);
-
-//         //Find and assign attributes
-
-//         //if Class is found
-//         if (domString[i].match(regex.class)) {
-//           let classList = domString[i]
-//             .match(regex.class)
-//             .map((el) => el.slice(1));
-//           tag.classList.add(...classList);
-//         }
-
-//         //If ID is found
-//         if (domString[i].match(regex.id)) {
-//           let id = domString[i].match(regex.id).map((el) => el.slice(1));
-//           tag.id = id;
-//         }
-
-//         //If innerText is found
-//         if (domString[i].match(regex.text)) {
-//           let text = domString[i].match(regex.text).groups.text;
-//           tag.textContent = text;
-//         }
-
-//         //if Attribute is discovered
-//         if (domString[i].match(regex.attribute)) {
-//           let match;
-//           while ((match = regex.attribute.exec(domString[i])) !== null) {
-//             let attribute = match.groups.attribute;
-//             let content = match.groups.content;
-//             tag.setAttribute(attribute, content);
-//           }
-//           regex.attribute.lastIndex = 0;
-//         }
-//         tagArr.push({ tag, open: true });
-
-//         // OR Matched a closing tag
-//       } else if (domString[i].match(regex.closeTag) !== null) {
-//         let closeTag = domString[i].match(regex.tag).groups.tag;
-//         // let previousTag = tagArr[tagArr.length - 1].tag.tagName.toLowerCase();
-//         let previousTagIsOpen = tagArr[tagArr.length - 1].open;
-//         let parentTagIndex = elementLastIndex(
-//           tagArr,
-//           (el) => el.tag.tagName.toLowerCase() === closeTag && el.open
-//         );
-//         let children = tagArr.splice(parentTagIndex).map((el) => (el = el.tag));
-//         let parent = children.shift();
-
-//         for (let i = 0; i < children.length; i++) {
-//           parent.appendChild(children[i]);
-//         }
-//         tagArr.push({ tag: parent, open: false });
-//       }
-//     }
-//     return tagArr[0].tag;
-//   }
-// }
 
 //get weekdays
 function getWeekDay(index) {

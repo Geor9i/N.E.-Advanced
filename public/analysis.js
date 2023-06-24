@@ -6,20 +6,20 @@ let analysisPage = domGen(`
     </div>
     <div .analysis__inner-dropdown>
         <div .analysis__inner-content>
-        <input .analysis__inner-content-input type="text">
+        <label for="#sales-summary-input">Paste your periodic sales summary report</label>
+        <input .analysis__inner-content-input #sales-summary-input type="text">
         </input>
-        <button .analysis__inner-content-button>
-        </button>
+        <button .analysis__inner-content-button>Process</button>
         </div>
     </div>
     <div .analysis__inner-bar>Hourly Sales
     </div>
     <div .analysis__inner-dropdown>
         <div .analysis__inner-content>
-        <input .analysis__inner-content-input type="text">
+        <label for="hourly-sales-input">Paste your periodic hourly sales report</label>
+        <input #hourly-sales-input .analysis__inner-content-input type="text">
         </input>
-        <button .analysis__inner-content-button>
-        </button>
+        <button .analysis__inner-content-button>Process</button>
         </div>
     </div>
 </div>
