@@ -1,4 +1,5 @@
 let storeForm = document.querySelector('.store__open-times__form__inactive');
+let confirmButtonContainer = document.querySelector('.store__details-confirm-button__container');
 
 let analysisPage = domGen(`
 <div #analysis-container .store__details__container>
@@ -25,4 +26,4 @@ let analysisPage = domGen(`
 </div>
 `)
 
-storeForm.appendChild(analysisPage);
+storeForm.insertBefore(analysisPage, confirmButtonContainer);

@@ -103,9 +103,6 @@ function sideBarSearchField (productsOnOrder) {
         }
     })
 
-
-
-
 }
 
 // Hide Elements during search and generate appropriate amount 

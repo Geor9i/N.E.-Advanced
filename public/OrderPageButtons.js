@@ -169,13 +169,16 @@ orderTableContainerElement.addEventListener("click", (e) => {
       }
     }
   }
-// Pressing the +/- button on the order 
+// Pressing the +/- button on the order table
   if (e.target.tagName === "BUTTON") {
     inputInvolved = true;
     let value = e.target.parentElement.parentElement.children[0];
+    let productName = e.target.parentElement.parentElement.parentElement.children[0].textContent;
+
     updateButton.classList.add("press__button__glow");
     let buttonValue = e.target.textContent === "+" ? 1 : -1;
     value.textContent = Math.max(0, Number(value.textContent) + buttonValue);
+    productsOnOrder[productName].order = Math.max(0, Number(value.textContent));
   }
 
   if (e.target.tagName === "INPUT" && e.target.classList.contains("order-quantity-input")) {
