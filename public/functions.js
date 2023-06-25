@@ -595,7 +595,6 @@ function domGen(domString) {
         //OR Matched an opening tag
       } 
 
-
       if (domString[i].match(regex.closeTag) !== null) {
         let closeTag = domString[i].match(regex.tag).groups.tag;
         // let previousTag = tagArr[tagArr.length - 1].tag.tagName.toLowerCase();
@@ -653,6 +652,36 @@ function getMonth(index) {
 function stringToNumber(string) {
   return Number(string.trim().split(",").join("").split("£").join(""));
 }
+
+//Function to reduce non focused values in arr for a total of 100
+    function keepWithin100(arr, focusedIndex) {
+        function sumArr(arr) {
+          return arr.reduce((acc, curr) => acc + curr);
+        }
+        let sum = sumArr(arr);
+         
+          let focusedNum = arr[focusedIndex];
+          let reduceTotalBy = sum - 100;
+          let sideSum = sum - focusedNum;
+          let adjusted = [];
+          for (let i = 0;i < arr.length;i++) {
+            if (i !== focusedIndex) {
+              adjusted.push(arr[i] / sideSum);
+            } else adjusted.push(0);
+          }
+          let corrected = [];
+          for (let i = 0;i < arr.length;i++) {
+            if (i !== focusedIndex) {
+              corrected.push(reduceTotalBy * adjusted[i]);
+            } else corrected.push(0);
+          }
+          for (let i = 0;i < arr.length;i++) {
+            if (i !== focusedIndex) {
+              arr[i] -= corrected[i];
+          }
+      }
+        return arr;
+    }
 
 //Generate tableRows for products
 function productTableConstructor(currentOrderProducts, product, append = true) {

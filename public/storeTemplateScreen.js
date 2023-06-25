@@ -144,6 +144,7 @@ function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
     let openTimeSelectors = [];
     let closeTimeSelectors = [];
     let dailySalesFields = Array.from(document.querySelectorAll('.sales-percentage-input'));
+    let realSalesPercent = new Array(7).fill(0);
     //sort selectors in 2 groups
     timeSelectors.forEach((el,i) => {
         let offButton = el.parentElement.parentElement.parentElement.parentElement.children[0];
@@ -163,13 +164,18 @@ function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
 
     //Adjust Availability of fields as weekdays are switched off
     weekDayMainContainer.addEventListener('click', (e) => {
-        let current = e.target
+        let current = e.target;
+        //Select any field
+        if (current.tagName.includes('INPUT')) {
+            current.select();
+        }
         if (current.className === 'weekday-button__active'  || current.className === 'weekday-button__inactive') {
             let activeButtons = document.querySelectorAll('.weekday-button__active');
             //reset all input arr
             openTimeSelectors = [];
             closeTimeSelectors = [];
             dailySalesFields = [];
+            realSalesPercent = [];
             for (let section of activeButtons) {
                 let container = section.parentElement
                 let [open, close] = container.querySelectorAll('.time-selector');
@@ -177,13 +183,33 @@ function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
                 openTimeSelectors.push(open);
                 closeTimeSelectors.push(close);
                 dailySalesFields.push(dailySales);
-
-
+                realSalesPercent.push(Number(dailySales.value));
             }
+            updateToHundred();
         }
     })
 
-    //Autofil timesector for the first selection 
+    function updateToHundred() {
+        let sum = realSalesPercent.reduce((acc, curr) => acc + curr,0);
+        if (sum > 0) {
+          let adjustment = 100 - sum;
+          let adjusted = [];
+          for (let i = 0; i < realSalesPercent.length; i++) {
+            let value = realSalesPercent[i];
+            adjusted.push(adjustment * (value / sum));
+          }
+          for (let i = 0; i < realSalesPercent.length; i++) {
+            let value = realSalesPercent[i];
+            realSalesPercent[i] = value + adjusted[i];
+            dailySalesFields[i].value = realSalesPercent[i].toFixed(2);
+          }
+          let result = realSalesPercent.reduce(
+            (acc, curr) => acc + curr, 0);
+          console.log(result);
+        }
+      }
+
+    //Autofill time selector for the first selection 
     weekDayMainContainer.addEventListener('change', (e) => {
         let current = e.target;
         if (current.className ==='time-selector') {
@@ -195,57 +221,36 @@ function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
                     autoFillInitial.close = true;
             }
         } else if (current.className ==='sales-percentage-input') {
-            if (stringToNumber(current.value) > 99) {
-                e.target.value = 99;
+            if (current.value === '' || current.value === Number(0)) {
+                current.value = 0;
+                updateToHundred()
+            }
+            if (stringToNumber(current.value) > 99.99) {
+                e.target.value = 99.99;
             }
             if (dailySalesFields.includes(current) && !autoFillInitial.dailySales) {
                 dailySalesFields.forEach(el => el.value = current.value);
+                for (let i = 0;i < dailySalesFields.length; i++) {
+                    realSalesPercent[i] = Number(current.value);
+                    dailySalesFields[i].value = realSalesPercent[i].toFixed(2);
+                }
                 autoFillInitial.dailySales = true;
             }
             equalizePercent();
-            //Adjust Percentage values to fit within 100%
 
+            //Adjust Percentage values to fit within 100%
             function equalizePercent () {
-                let sum = 0;
                 let currentIndex = dailySalesFields.indexOf(current);
-                dailySalesFields.forEach(el => sum += stringToNumber(el.value));
-                if(sum > 100 && dailySalesFields.length > 1) {
-    
-                    let difference = 100 - Number(current.value);
-                    let ratio = 100 - Number(current.value);
-                    let sumWithoutFocused = 0;
-                    // get total sum without the focused value
-                    for (let i = 0;i < dailySalesFields.length;i++) {
-                        if (i !== currentIndex) {
-                            sumWithoutFocused += Number(dailySalesFields[i].value);
-                        } 
-                    }
-                    ratio /= sumWithoutFocused;
-        
-                   let totalOfRemaining = 0;
-                   for (let i = 0;i < dailySalesFields.length;i++) {
-                    if (i !== currentIndex) {
-                        let value = Number(dailySalesFields[i].value)
-                        dailySalesFields[i].value = value * ratio;
-                        totalOfRemaining += Number(dailySalesFields[i].value);
-                    }
-                   }
-                   adjustedTotal = totalOfRemaining / (totalOfRemaining * difference);
-        
-                   for (let i = 0;i < dailySalesFields.length;i++) {
-                    if (i !== currentIndex) {
-                        let value = Number(dailySalesFields[i].value)
-                        dailySalesFields[i].value = (value  / (totalOfRemaining * adjustedTotal)).toFixed(2);
-                    }
-                   }
-                   sum = 0;
-                dailySalesFields.forEach(el => sum += stringToNumber(el.value));
-                console.log(sum);
+                realSalesPercent[currentIndex] = Number(dailySalesFields[currentIndex].value);
+                realSalesPercent = keepWithin100(realSalesPercent, currentIndex);
+                for (let i = 0; i < dailySalesFields.length;i++) {
+                        dailySalesFields[i].value = realSalesPercent[i].toFixed(2);
                 }
-            }
-           
-        } 
+                console.log(realSalesPercent.reduce((a, c) => a += c));
+            } 
+        }
     })
+      
 
     //Use tab key to switch between same type fields for easy input
     weekDayMainContainer.addEventListener('keydown', (e) => {
@@ -278,7 +283,10 @@ function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
                 const currentIndex = fieldArr.indexOf(field);
                 const nextIndex = e.shiftKey ? currentIndex - 1 : currentIndex + 1;
                 const wrappedIndex = nextIndex < 0 ? fieldArr.length - 1 : nextIndex % fieldArr.length;
-                fieldArr[wrappedIndex].focus();
+                fieldArr[wrappedIndex].focus()
+                if (fieldArr[wrappedIndex].tagName.includes('INPUT')) {
+                    fieldArr[wrappedIndex].select()
+                }
     }
     })
 }
@@ -331,27 +339,6 @@ let weekDaySections = Array.from(weekDayMainContainer.children);
     }
     console.log(storeDetails);
 })
-
-
-/*
- storeDetails[getWeekDay(i)] = {
-        workDay: true,
-        openTime: '00:00',
-        closeTime: '00:00',
-        dailySales: 0,
-        deliveryInfo: {
-            hasDelivery: false,
-            deliveryETA: null,
-            deliveryCutOff: {
-                weekDay: null,
-                time: null
-            }
-        }
-    }
-*/
-// Store details functionality
-
-
 
 
 
