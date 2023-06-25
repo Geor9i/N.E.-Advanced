@@ -236,10 +236,10 @@ function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
                 }
                 autoFillInitial.dailySales = true;
             }
-            equalizePercent();
+            equalizePercent(current);
 
             //Adjust Percentage values to fit within 100%
-            function equalizePercent () {
+            function equalizePercent (current) {
                 let currentIndex = dailySalesFields.indexOf(current);
                 realSalesPercent[currentIndex] = Number(dailySalesFields[currentIndex].value);
                 realSalesPercent = keepWithin100(realSalesPercent, currentIndex);

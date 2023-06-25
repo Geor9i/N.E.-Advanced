@@ -659,10 +659,10 @@ function stringToNumber(string) {
           return arr.reduce((acc, curr) => acc + curr);
         }
         let sum = sumArr(arr);
-         
           let focusedNum = arr[focusedIndex];
           let reduceTotalBy = sum - 100;
           let sideSum = sum - focusedNum;
+         if (sideSum > 0) {
           let adjusted = [];
           for (let i = 0;i < arr.length;i++) {
             if (i !== focusedIndex) {
@@ -680,6 +680,8 @@ function stringToNumber(string) {
               arr[i] -= corrected[i];
           }
       }
+         }
+         
         return arr;
     }
 
