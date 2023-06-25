@@ -659,6 +659,7 @@ function stringToNumber(string) {
           return arr.reduce((acc, curr) => acc + curr);
         }
         let sum = sumArr(arr);
+        if (sum > 100) {
           let focusedNum = arr[focusedIndex];
           let reduceTotalBy = sum - 100;
           let sideSum = sum - focusedNum;
@@ -681,6 +682,8 @@ function stringToNumber(string) {
           }
       }
          }
+        }
+         
          
         return arr;
     }

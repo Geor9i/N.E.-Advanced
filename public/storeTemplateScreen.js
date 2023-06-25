@@ -89,6 +89,36 @@ weekDayMainContainer.addEventListener('click', (e) => {
         }
 })
 
+//Prepare field variables
+
+let timeSelectors = [];
+let openTimeSelectors = [];
+let closeTimeSelectors = [];
+let dailySalesFields = []
+let realSalesPercent = []
+
+//Update daily sales to always be a total of 100
+function updateToHundred() {
+    let sum = realSalesPercent.reduce((acc, curr) => acc + curr,0);
+    if (sum > 0) {
+      let adjustment = 100 - sum;
+      let adjusted = [];
+      for (let i = 0; i < realSalesPercent.length; i++) {
+        let value = realSalesPercent[i];
+        adjusted.push(adjustment * (value / sum));
+      }
+      for (let i = 0; i < realSalesPercent.length; i++) {
+        let value = realSalesPercent[i];
+        realSalesPercent[i] = value + adjusted[i];
+        dailySalesFields[i].value = realSalesPercent[i].toFixed(2);
+      }
+      let result = realSalesPercent.reduce(
+        (acc, curr) => acc + curr, 0);
+      console.log(result);
+    }
+  }
+
+
 
 //Generate store details tab
 function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
@@ -140,11 +170,11 @@ function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
               weekDayMainContainer.appendChild(weekDayContainer);
     }
     //get all store opening time selectors and sales %
-    let timeSelectors = document.querySelectorAll('.time-selector');
-    let openTimeSelectors = [];
-    let closeTimeSelectors = [];
-    let dailySalesFields = Array.from(document.querySelectorAll('.sales-percentage-input'));
-    let realSalesPercent = new Array(7).fill(0);
+    timeSelectors = document.querySelectorAll('.time-selector');
+    openTimeSelectors = [];
+    closeTimeSelectors = [];
+    dailySalesFields = Array.from(document.querySelectorAll('.sales-percentage-input'));
+    realSalesPercent = new Array(7).fill(0);
     //sort selectors in 2 groups
     timeSelectors.forEach((el,i) => {
         let offButton = el.parentElement.parentElement.parentElement.parentElement.children[0];
@@ -189,26 +219,7 @@ function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
         }
     })
 
-    function updateToHundred() {
-        let sum = realSalesPercent.reduce((acc, curr) => acc + curr,0);
-        if (sum > 0) {
-          let adjustment = 100 - sum;
-          let adjusted = [];
-          for (let i = 0; i < realSalesPercent.length; i++) {
-            let value = realSalesPercent[i];
-            adjusted.push(adjustment * (value / sum));
-          }
-          for (let i = 0; i < realSalesPercent.length; i++) {
-            let value = realSalesPercent[i];
-            realSalesPercent[i] = value + adjusted[i];
-            dailySalesFields[i].value = realSalesPercent[i].toFixed(2);
-          }
-          let result = realSalesPercent.reduce(
-            (acc, curr) => acc + curr, 0);
-          console.log(result);
-        }
-      }
-
+   
     //Autofill time selector for the first selection 
     weekDayMainContainer.addEventListener('change', (e) => {
         let current = e.target;
@@ -297,7 +308,7 @@ let storeDetails = {};
 
 let confirmButton = document.querySelector('.store__details-confirm-button');
 confirmButton.addEventListener('click', (e) => {
-
+    updateToHundred()
 let weekDaySections = Array.from(weekDayMainContainer.children);
 
     //iterate through all sections and save available data
