@@ -31,11 +31,13 @@ dateInputField.value = dateFormat
 //Clicking the date calendar button
 calendarButtonElement.addEventListener("click", (e) => {
 
+  //Hide Calendar on form Click
   orderFormElement.addEventListener("click", (e) => {
       let calendarBodyElement = document.getElementById("calendar-body")
       if (calendarContainerElement.style.display === "block") {
         if (e.target !== calendarButtonElement) {
           if (e.target !== calendarBodyElement) {
+            if (e.target.id !== 'arrow-up' && e.target.id !== 'arrow-down')
             calendarContainerElement.style.display = 'none';
         }
         } 
