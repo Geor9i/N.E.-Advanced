@@ -1,3 +1,7 @@
+.inactive {
+  display: none;
+}
+
 :root {
     --blue-color__order-page: #0664e7;
     --blue-glow__order-page: #bff5ff67;

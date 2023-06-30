@@ -168,6 +168,7 @@ cursor: pointer;
     grid-gap: 5px;
     grid-template-columns: repeat(7, 1fr);
     background-color: rgb(255, 255, 255);
+  overflow-x: auto;
 }
 
 .weekday__main__container input, select {

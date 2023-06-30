@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="calendar.css">
     <link rel="stylesheet" href="order.css">
     <link rel="stylesheet" href="storeTemplate.css"> 
+    <link rel="stylesheet" href="inventoryTemplate.css">
     <title>Next Order</title>
 </head>
 <body>
@@ -43,11 +44,11 @@
                         </div>
                         
                         <label id="date-label" for="date">Order Date</label>
-                        <div>
+                        <div id="calendar-input-container">
                             <input type="text" required="true" id="date-input" name="date-input">
                             <button id="date-button">📆</button>
                         </div>
-
+ 
                             <div id="calendar-container">
                                 <div id="calendar-body">
                                     <div id="calendar-header">
@@ -132,7 +133,7 @@
                                     </table>
                                 </div>
                             </div>
-                        
+                       
                         <label for="previous-sales">Last Week's Sales:</label>
                         <input type="text" required="true" id="previous-sales" name="previous-sales">
                       
@@ -166,13 +167,13 @@
         </section>
         <section class="inventory-section__inactive">
             <div class="inventory__main-container">
-            <div class="inventory__start-menu__active">
-                    <div id="inventory__start-menu__create-button" class="inventory__start-menu__selector">
-                        <h1>Create New</h1>
+                <div class="inventory__start-menu__active">
+                        <div id="inventory__start-menu__create-button" class="inventory__start-menu__selector">
+                            <h1>Create New</h1>
                         </div>
-                    <div id="inventory__start-menu__edit-button" class="inventory__start-menu__selector">
-                        <h1>Edit</h1>
-                    </div>
+                        <div id="inventory__start-menu__edit-button" class="inventory__start-menu__selector">
+                            <h1>Edit</h1>
+                        </div>
                 </div> 
                 <!-- Create screen -->
                 <div class="create-store-template__form__inactive">
@@ -203,6 +204,72 @@
                         <button class="store__details-confirm-button">Confirm</button>
                     </div>
                 </div>
+
+                <div class="inventory-template__create-form__inactive">
+                    <div class="inventory-template__main-container">
+                        <div class="inventory-record-container">
+                            <div class="inventory-title__bar">Inventory Record</div>
+                                <div class="inventory-record__category-bar">
+                                    <span class="inventory-record-category-name">Name</span>
+                                    <span class="inventory-record-category-date">Category</span>
+                                    <span class="inventory-record-category-date">Date</span>
+                                    <span class="inventory-record-category-day-span">Day span</span>
+                                    <span class="inventory-record-category-state">ID</span>
+                                </div>
+                            <div class="inventory-record__content__container">
+                          <!--Test Content  -->
+                              <div class="inventory-record__content">
+                                <h3>Products 2023</h3>
+                                  <p>Ambient Packaging</p>
+                                  <p>29/06/2023</p>
+                                  <p>126</p>
+                                  <p>3</p>
+                              </div>
+ 
+                            </div>
+                            <div class="navigation__bar">
+                                <div class="nav-splitter create-nav">
+                                <button id="inventory-add-record-button" class="inventory-record-button">+</button>
+                               </div>  
+                                <div class="nav-splitter">
+                                    <button class="inventory-record-button">Edit</button>
+                                    <button class="inventory-record-button">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                      
+                        <div class="inventory-product-rules-container">
+                            <div class="inventory-title__bar">Product Rules</div>
+                           <div class="inventory-record__category-bar">
+                                    <span class="inventory-record-category-name">Name</span>
+                                    <span class="inventory-record-category-date">Category</span>
+                                    <span class="inventory-record-category-date">Date</span>
+                                    <span class="inventory-record-category-state">State</span>
+                                    <span class="inventory-record-category-day-span">Link ID</span>
+                                </div>
+                               <div class="inventory-record__content__container">
+                          <!--Test Content  -->
+                              <div class="inventory-record__content">
+                                <h3>Actual Usage</h3>
+                                  <p>Ambient Packaging</p>
+                                  <p>01/07/2023</p>
+                                  <p>Active</p>
+                                  <p>3</p>
+                              </div>
+                        </div>
+                           <div class="navigation__bar">
+                                <div class="nav-splitter create-nav">
+                                <button class="inventory-record-button">+</button>
+                               </div>  
+                                <div class="nav-splitter">
+                                    <button class="inventory-record-button">Link</button>
+                                    <button class="inventory-record-button">Edit</button>
+                                    <button class="inventory-record-button">Delete</button>
+                                </div>
+                    </div>
+                    </div>
+                </div>
+
                 <!-- Edit screen -->
                 <div class="edit-store-template__form__inactive">
                     <h2 id="store-name__edit-template__header">Store:</h2>
@@ -218,17 +285,20 @@
         </section>
         
     </main>
+    <script src="app.js" type="module"></script>
     <script src="productUsage.js"></script> 
     <script src="appState.js"></script> 
     <script src="functions.js"></script>
-    <script src="orderRequestForm.js"></script>
-    <script src="OrderPageButtons.js"></script>
     <script src="calendarMonthMap.js"></script>
     <script src="calendar.js"></script>
+    <script src="orderRequestForm.js"></script>
+    <script src="OrderPageButtons.js"></script>
     <script src="DeliveryReportHarvest.js"></script> 
     <script src="searchSideBar.js"></script>
     <script src="storeTemplateScreen.js"></script>
     <script src="analysis.js"></script>
+    <script src="inventoryTemplate.js"></script>
+    <script src="invRep.js"></script>
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";

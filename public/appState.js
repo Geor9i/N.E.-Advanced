@@ -33,11 +33,11 @@ let nextOrderParameters = {};
 
 //STATES====================================================================
 
-function changeState () {
+function changeState() {
   let state = 0;
 
   return {
-    getState () {
+    getState() {
       return state;
     },
     setState(num) {
@@ -54,21 +54,21 @@ let appState = changeState();
 
 //order page dump state
 
-function orderDumpState (value) {
-  
+function orderDumpState(value) {
+
   switch (value) {
     case 0:
-    rmfDataDumpElement.className = 'rmf-data-dump';
-    rmfDataDumpElement.disabled = false;
-    rmfDataDumpElement.value = '';
-    break;
+      rmfDataDumpElement.className = 'rmf-data-dump';
+      rmfDataDumpElement.disabled = false;
+      rmfDataDumpElement.value = '';
+      break;
     case 1:
       rmfDataDumpElement.className = 'rmf-data-dump__disabled';
       rmfDataDumpElement.disabled = true;
-    break;
+      break;
   }
 }
-    
+
 
 //====================================================================STATES
 
@@ -86,22 +86,22 @@ function updateScreens(state) {
       deleteChildren(headerOutputAreaElement, outputAreaElement, sideScreenElement);
       orderDumpState(0);
       break;
-      case 1:
-        inventorySectionElement.className = 'inventory-section__inactive';
-        createStoreTemplateFormElement.className = 'create-store-template__form__inactive';
-        editStoreTemplateFormElement.className = 'edit-store-template__form__inactive';
-        orderSectionElement.className = "order-page__section__active";
-        orderPageMainContainer.className = 'generated__order-page__main__container';
-        orderFormAreaElement.className = "order__form__area__appear";
-        rmfDataDumpElement.value = "";
-        deleteChildren(headerOutputAreaElement, outputAreaElement, sideScreenElement);
-        orderDumpState(0);
+    case 1:
+      inventorySectionElement.className = 'inventory-section__inactive';
+      createStoreTemplateFormElement.className = 'create-store-template__form__inactive';
+      editStoreTemplateFormElement.className = 'edit-store-template__form__inactive';
+      orderSectionElement.className = "order-page__section__active";
+      orderPageMainContainer.className = 'generated__order-page__main__container';
+      orderFormAreaElement.className = "order__form__area__appear";
+      rmfDataDumpElement.value = "";
+      deleteChildren(headerOutputAreaElement, outputAreaElement, sideScreenElement);
+      orderDumpState(0);
       break;
     case 2:
-        orderFormAreaElement.className = "order__form__area__dissapear";
-        createStoreTemplateFormElement.className = 'create-store-template__form__inactive';
-        editStoreTemplateFormElement.className = 'edit-store-template__form__inactive'
-        setTimeout(function() {
+      orderFormAreaElement.className = "order__form__area__dissapear";
+      createStoreTemplateFormElement.className = 'create-store-template__form__inactive';
+      editStoreTemplateFormElement.className = 'edit-store-template__form__inactive'
+      setTimeout(function() {
 
         productsOnOrder = nextOrder(deliveryHarvestProducts, nextOrderParameters.orderInvoiceDate, nextOrderParameters.isInvoiced, nextOrderParameters.receivedToday, nextOrderParameters.weeklySalesData, nextOrderParameters.weeklyForecastData);
 
@@ -120,31 +120,41 @@ function updateScreens(state) {
       orderSectionElement.className = "order-page__section";
       orderPageMainContainer.className = 'generated__order-page__main__container';
       break;
-      case 4:
-        startMenu.className = 'inventory__start-menu__inactive'
-        inventorySectionElement.className = 'inventory-section__active';
-        orderSectionElement.className = "order-page__section";
-        orderPageMainContainer.className = 'generated__order-page__main__container';
-        createStoreTemplateFormElement.className = 'create-store-template__form__active';
-        editStoreTemplateFormElement.className = 'edit-store-template__form__inactive'
-        break;
-      case 4.1:
-        //Delete----------------------------
-        inventorySectionElement.className = 'inventory-section__active';
-        startMenu.className = 'inventory__start-menu__inactive';
-        //---------------------------Delete
-        createStoreTemplateFormElement.className = 'create-store-template__form__inactive';
-        storeOpeningTimesForm.className = 'store__open-times__form__active';
-        generateStoreOpeningTimesTemplate(weekDayMainContainer)
-        break;
-        case 5:
-          startMenu.className = 'inventory__start-menu__inactive'
-          inventorySectionElement.className = 'inventory-section__active';
-          orderSectionElement.className = "order-page__section";
-          orderPageMainContainer.className = 'generated__order-page__main__container';
-          createStoreTemplateFormElement.className = 'create-store-template__form__inactive';
-          editStoreTemplateFormElement.className = 'edit-store-template__form__active';
-          break;
+    case 4:
+      startMenu.className = 'inventory__start-menu__inactive'
+      inventorySectionElement.className = 'inventory-section__active';
+      orderSectionElement.className = "order-page__section";
+      orderPageMainContainer.className = 'generated__order-page__main__container';
+      createStoreTemplateFormElement.className = 'create-store-template__form__active';
+      editStoreTemplateFormElement.className = 'edit-store-template__form__inactive'
+      break;
+    case 4.1:
+      //Delete----------------------------
+      inventorySectionElement.className = 'inventory-section__active';
+      startMenu.className = 'inventory__start-menu__inactive';
+      //---------------------------Delete
+      createStoreTemplateFormElement.className = 'create-store-template__form__inactive';
+      storeOpeningTimesForm.className = 'store__open-times__form__active';
+      clearStoreOpeningTimesTemplate();
+      generateStoreOpeningTimesTemplate(weekDayMainContainer)
+      break;
+    case 4.2:
+      //Delete----------------------------
+      inventorySectionElement.className = 'inventory-section__active';
+      startMenu.className = 'inventory__start-menu__inactive';
+      //---------------------------Delete
+      createStoreTemplateFormElement.className = 'create-store-template__form__inactive';
+      storeOpeningTimesForm.className = 'store__open-times__form__inactive';
+      inventoryTemplateForm.className = 'inventory-template__create-form__active'
+      break;
+    case 5:
+      startMenu.className = 'inventory__start-menu__inactive'
+      inventorySectionElement.className = 'inventory-section__active';
+      orderSectionElement.className = "order-page__section";
+      orderPageMainContainer.className = 'generated__order-page__main__container';
+      createStoreTemplateFormElement.className = 'create-store-template__form__inactive';
+      editStoreTemplateFormElement.className = 'edit-store-template__form__active';
+      break;
   }
 
   //State REF
@@ -170,51 +180,51 @@ function updateScreens(state) {
 //Dropdown menu make an order button onclick
 makeAnOrderButtonElement.addEventListener("click", () => {
 
-    if (appState.getState() === 2) {
-      displayOrderWarning();
-    } else {
-      appState.setState(1);
-    }     
-    dropdownMenuElement.className = "dropdown__menu__return";
-  })
+  if (appState.getState() === 2) {
+    displayOrderWarning();
+  } else {
+    appState.setState(1);
+  }
+  dropdownMenuElement.className = "dropdown__menu__return";
+})
 
-  inventoryAdjustmentButtonElement.addEventListener("click", () => {
-    appState.setState(3)
-    dropdownMenuElement.className = "dropdown__menu__return";
-  })
-  
-  
-  
-  
-  //DropDown Menu Animation and state changes
-  headerBarElement.addEventListener("click", headerBarDropdown) 
-  pullDownElement.addEventListener("click", headerBarDropdown);
+inventoryAdjustmentButtonElement.addEventListener("click", () => {
+  appState.setState(3)
+  dropdownMenuElement.className = "dropdown__menu__return";
+})
 
-  function headerBarDropdown() {
-    if (dropdownMenuElement.className === "dropdown__menu__active") {
-      dropdownMenuElement.className = "dropdown__menu__return"
-    } else {
-      dropdownMenuElement.className = "dropdown__menu__active"
+
+
+
+//DropDown Menu Animation and state changes
+headerBarElement.addEventListener("click", headerBarDropdown)
+pullDownElement.addEventListener("click", headerBarDropdown);
+
+function headerBarDropdown() {
+  if (dropdownMenuElement.className === "dropdown__menu__active") {
+    dropdownMenuElement.className = "dropdown__menu__return"
+  } else {
+    dropdownMenuElement.className = "dropdown__menu__active"
+  }
+}
+
+function deleteChildren(...elements) {
+  for (let element of elements) {
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
     }
   }
+}
 
-  function deleteChildren(...elements) {
-    for (let element of elements) {
-      while (element.firstChild) {
-        element.removeChild(element.firstChild);
-      }
-    }
-    }
+function displayOrderWarning() {
+  return new Promise((resolve, reject) => {
 
-    function displayOrderWarning() {
-      return new Promise((resolve, reject) => {
 
-        
-      dropdownMenuElement.className = 'dropdown__menu';
-      headerBarElement.removeEventListener('click', headerBarDropdown);
-      pullDownElement.removeEventListener('click', headerBarDropdown);
+    dropdownMenuElement.className = 'dropdown__menu';
+    headerBarElement.removeEventListener('click', headerBarDropdown);
+    pullDownElement.removeEventListener('click', headerBarDropdown);
 
-      let pageCover = domGen(`
+    let pageCover = domGen(`
         <div .page-cover>
           <div .warning-message-container>
             <div .warning-message-text-container>
@@ -226,28 +236,28 @@ makeAnOrderButtonElement.addEventListener("click", () => {
             </div>
           </div>
         </div>
-        `) 
+        `)
 
-      orderSectionElement.insertBefore(pageCover, orderSectionElement.firstChild);
-      let warningMessageContainer = document.querySelector('.warning-message-container')
-      
-      warningMessageContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('warning-message__button') && e.target.textContent === 'Yes') {
-          warningMessageContainer.remove();
-          appState.setState(1);
-          resolve(true);
-          pageCover.remove();
-          warningMessageContainer.remove();
-          headerBarElement.addEventListener('click',headerBarDropdown);
-          pullDownElement.addEventListener('click',headerBarDropdown);
-        } else if (e.target.classList.contains('warning-message__button') && e.target.textContent === 'Cancel'){
-          warningMessageContainer.remove();
-          resolve(false);
-          pageCover.remove();
-          warningMessageContainer.remove();
-          headerBarElement.addEventListener('click',headerBarDropdown);
-          pullDownElement.addEventListener('click',headerBarDropdown);
-        }
-      })
+    orderSectionElement.insertBefore(pageCover, orderSectionElement.firstChild);
+    let warningMessageContainer = document.querySelector('.warning-message-container')
+
+    warningMessageContainer.addEventListener('click', (e) => {
+      if (e.target.classList.contains('warning-message__button') && e.target.textContent === 'Yes') {
+        warningMessageContainer.remove();
+        appState.setState(1);
+        resolve(true);
+        pageCover.remove();
+        warningMessageContainer.remove();
+        headerBarElement.addEventListener('click', headerBarDropdown);
+        pullDownElement.addEventListener('click', headerBarDropdown);
+      } else if (e.target.classList.contains('warning-message__button') && e.target.textContent === 'Cancel') {
+        warningMessageContainer.remove();
+        resolve(false);
+        pageCover.remove();
+        warningMessageContainer.remove();
+        headerBarElement.addEventListener('click', headerBarDropdown);
+        pullDownElement.addEventListener('click', headerBarDropdown);
+      }
     })
-    }
+  })
+}

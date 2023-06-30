@@ -524,7 +524,7 @@ function domGen(domString) {
       class: /(?!\.\w+[\$\{\}<]+)\.[-_0-9a-z]+/g,
       id: /\#[-_0-9a-zA-Z]+/g,
       text: />(?<text>[^\n<]+)/,
-      attribute: /(?<attribute>[a-z]{1,15})="(?<content>[-\(\)$\{\}\w]+)"/g,
+      attribute: /(?<attribute>[a-z]{1,15})="(?<content>[-\s\(\)$\{\}\w!@&%£]+)"/g,
       function: /\((?<name>[\w]+)\((?<arguments>[<>\w,\s]+)\)\)/,
     };
 

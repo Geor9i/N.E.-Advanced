@@ -1,3 +1,95 @@
+// let orderFormArea = document.querySelector('.order__form__area');
+// let calendarInputContainer = document.getElementById('calendar-input-container')
+// let calendarElement = domGen(`
+
+// <div #calendar-container>
+// <div #calendar-body>
+//     <div #calendar-header>
+//         <div .in-header-container>
+//             <h2 #calendar-header-text>2025 June</h2>
+//         </div>
+//         <div .in-header-container>
+//             <div .arrow-container></div>
+//             <div .arrow-container>
+//                 <div #arrow-up></div>
+//             </div>
+//             <div .arrow-container>
+//                 <div #arrow-down></div>    
+//             </div>
+//         </div>
+        
+//     </div>
+//     <table #day-table>
+//         <tr>
+//             <th>Mon</th>
+//             <th>Tue</th>
+//             <th>Wed</th>
+//             <th>Thu</th>
+//             <th>Fri</th>
+//             <th>Sat</th>
+//             <th>Sun</th>
+//         </tr>
+//         <tr>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//         </tr>
+//         <tr>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//         </tr>
+//         <tr>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//         </tr>
+//         <tr>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//         </tr>
+//         <tr>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//         </tr>
+//         <tr>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//             <td>na</td>
+//         </tr>
+//     </table>
+// </div>
+// </div>
+// `)
+
+// orderFormArea.insertBefore(calendarElement, calendarInputContainer.nextSibling)
+
 let calenderHeaderTextElement = document.getElementById("calendar-header-text");
 let calendarTrCollection = document.querySelectorAll(`#day-table tr`);
 let dayTable = document.querySelector(`#day-table`);

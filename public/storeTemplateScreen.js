@@ -118,7 +118,11 @@ function updateToHundred() {
     }
   }
 
-
+function clearStoreOpeningTimesTemplate() {
+    while (weekDayMainContainer.firstChild) {
+        weekDayMainContainer.firstChild.remove()
+    }
+}
 
 //Generate store details tab
 function generateStoreOpeningTimesTemplate (weekDayMainContainer) {
