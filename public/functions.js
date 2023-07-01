@@ -482,7 +482,23 @@ function domFunctions() {
         select.appendChild(option);
         
       }
-    },
+    }, generateCalendarTable(parent) {
+      for (let i = 0; i < 7;i++) {
+        let tr = document.createElement('tr');
+        for (let d = 0; d < 7; d++) {
+          if (i === 0) {
+            let th = document.createElement('th');
+            th.textContent = getWeekDay(d).slice(0,3);
+            tr.appendChild(th);
+          } else {
+            let td = document.createElement('td');
+            td.textContent = 'NA';
+            tr.appendChild(td);
+          }
+        }
+       parent.appendChild(tr)
+      }
+    }
   };
 }
 
@@ -554,7 +570,7 @@ function domGen(domString) {
         }
 
         //If innerText is found
-        if (domString[i].match(regex.text)) {
+        if (domString[i].match(regex.text) && domString[i].match(regex.function) === null) {
           let text = domString[i].match(regex.text).groups.text;
           tag.textContent = text;
         }
@@ -728,4 +744,32 @@ function productTableConstructor(currentOrderProducts, product, append = true) {
     }
     currentOrderProducts[product].isInDataTable = true;
   }
+}
+
+function optimizeName(name) {
+  //Remove special chars
+  const specialChars = {
+      '!': '', '"': '', '#': '', '$': '', '%': ' ', '&': ' ', "'": '', '(': ' ',
+      ')': ' ', '*': '', '+': '', '-': '', '/': ' ', ':': '',
+      ';': ' ', '<': '', '=': '', '>': '', '?': '', '@': '', '[': '', '\\': '',
+      ']': '', '^': '', '_': '', '`': '', '{': '', '|': '', '}': '', '~': '',
+      '\n': ' ', '\t': ' ', ' ': ' ', '':' '
+    };
+    
+let newString = '';
+for (let i = 0;i < name.length; i++) {
+  let char = name[i];
+  
+  if(specialChars.hasOwnProperty(char)) {
+      char = specialChars[char];
+  }
+      newString += char;
+}
+//Remove excess space
+const pattern = /\s{2,}/g;
+while ((match = pattern.exec(newString))!== null) {
+  newString = newString.replace(pattern, ' ');
+}
+pattern.lastIndex = 0;
+return newString.trim()
 }

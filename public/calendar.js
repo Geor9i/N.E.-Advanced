@@ -1,122 +1,35 @@
-// let orderFormArea = document.querySelector('.order__form__area');
-// let calendarInputContainer = document.getElementById('calendar-input-container')
-// let calendarElement = domGen(`
+let orderFormArea = document.querySelector('.order__form__area');
+let calendarInputContainer = document.getElementById('calendar-input-container')
+let calendarElement = domGen(`
 
-// <div #calendar-container>
-// <div #calendar-body>
-//     <div #calendar-header>
-//         <div .in-header-container>
-//             <h2 #calendar-header-text>2025 June</h2>
-//         </div>
-//         <div .in-header-container>
-//             <div .arrow-container></div>
-//             <div .arrow-container>
-//                 <div #arrow-up></div>
-//             </div>
-//             <div .arrow-container>
-//                 <div #arrow-down></div>    
-//             </div>
-//         </div>
-        
-//     </div>
-//     <table #day-table>
-//         <tr>
-//             <th>Mon</th>
-//             <th>Tue</th>
-//             <th>Wed</th>
-//             <th>Thu</th>
-//             <th>Fri</th>
-//             <th>Sat</th>
-//             <th>Sun</th>
-//         </tr>
-//         <tr>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//         </tr>
-//         <tr>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//         </tr>
-//         <tr>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//         </tr>
-//         <tr>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//         </tr>
-//         <tr>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//         </tr>
-//         <tr>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//             <td>na</td>
-//         </tr>
-//     </table>
-// </div>
-// </div>
-// `)
+<div #calendar-container>
+<div #calendar-body>
+    <div #calendar-header>
+        <div .in-header-container>
+            <h2 #calendar-header-text>2025 June</h2>
+        </div>
+        <div .in-header-container>
+            <div .arrow-container></div>
+            <div .arrow-container>
+                <div #arrow-up></div>
+            </div>
+            <div .arrow-container>
+                <div #arrow-down></div>    
+            </div>
+        </div>
+    </div>
+    <table #day-table>
+    <tbody #day-table-tbody>(generateCalendarTable(<tbody>))</tbody>
+    </table>
+</div>
+</div>
+`)
 
-// orderFormArea.insertBefore(calendarElement, calendarInputContainer.nextSibling)
+orderFormArea.insertBefore(calendarElement, calendarInputContainer.nextSibling)
 
 let calenderHeaderTextElement = document.getElementById("calendar-header-text");
 let calendarTrCollection = document.querySelectorAll(`#day-table tr`);
 let dayTable = document.querySelector(`#day-table`);
-
-let daysOfWeek = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
-const monthNames = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
 let todayDate = new Date();
 let year = todayDate.getFullYear();
 let month = todayDate.getMonth();
@@ -131,7 +44,7 @@ let downArrowElement = document.getElementById("arrow-down");
 
 //On click function to change dates
 upArrowElement.addEventListener("click", () => {
-  if (month + 1 < monthNames.length) {
+  if (month + 1 < 12) {
     month++;
   } else {
     month = 0;
@@ -183,7 +96,7 @@ function fillCalendar(year, month, day) {
   }, [])[0];
   let currentMonthIndex = 0;
   let nextMonthIndex = 0;
-  calenderHeaderTextElement.innerText = `${year} ${monthNames[month]}`;
+  calenderHeaderTextElement.innerText = `${year} ${getMonth(month)}`;
 
   let activeRows = Array.from(calendarTrCollection).slice(1);
 
@@ -202,12 +115,12 @@ function fillCalendar(year, month, day) {
         let dateValues = getRightDate(year, month, "back");
         colCollection[col].setAttribute(
           "date",
-          `${colCollection[col].innerText}/${dateValues[1]}/${dateValues[0]} - ${daysOfWeek[col]}`
+          `${colCollection[col].innerText}/${dateValues[1]}/${dateValues[0]} - ${getWeekDay(col)}`
         );
         prevMonthIndex++;
       }
       //if the two weekdays match confirm in boolean
-      if (daysOfWeek[col] === selectedMonth[0][1]) {
+      if (getWeekDay(col) === selectedMonth[0][1]) {
         isCurrent = true;
       }
       //begin printing current month
@@ -223,7 +136,7 @@ function fillCalendar(year, month, day) {
           let dateValues = getRightDate(year, month, "next");
           colCollection[col].setAttribute(
             "date",
-            `${colCollection[col].innerText}/${dateValues[1]}/${dateValues[0]} - ${daysOfWeek[col]}`
+            `${colCollection[col].innerText}/${dateValues[1]}/${dateValues[0]} - ${getWeekDay(col)}`
           );
           continue;
         }
@@ -243,7 +156,7 @@ function fillCalendar(year, month, day) {
         currentMonthIndex++;
         colCollection[col].setAttribute(
           "date",
-          `${colCollection[col].innerText}/${month + 1}/${year} - ${daysOfWeek[col]}`
+          `${colCollection[col].innerText}/${month + 1}/${year} - ${getWeekDay(col)}`
         );
       }
     }
