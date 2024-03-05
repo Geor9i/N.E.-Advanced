@@ -20,7 +20,7 @@ This app was designed to work without a server. Simply download all files into a
 
 ### Data Extraction from RMF
 
-4. Access RMF and create a new order template.
+4. Access RMF and create a new order template.  ( RMF test order page supplied in repo )
 5. Ensure the following checkboxes are ticked for proper functionality:
  *	Current Inventory
  *	Previous Week's Usage
