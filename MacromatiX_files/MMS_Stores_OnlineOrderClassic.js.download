@@ -1,0 +1,463 @@
+﻿var onlineOrderClassicScope = Mx.ns("Mx.Inventory.Ordering");
+
+onlineOrderClassicScope.receivingTotalsCalculator = {};
+onlineOrderClassicScope.configs = { showActualReceived : false};
+
+(function (document, window, undefined) {
+    var context = onlineOrderClassicScope.receivingTotalsCalculator;
+
+    onlineOrderClassicScope.setConfigs = function(configs) {
+        if (!configs || !configs.showActualReceived){
+            onlineOrderClassicScope.configs.showActualReceived = false;
+            return;
+        }
+        onlineOrderClassicScope.configs.showActualReceived = configs.showActualReceived.toLowerCase() == "true" ? true : false;
+    }
+
+    var lineItemMap = {
+        //each line item in the format: itemCode, sellPrice, discount, taxPercentAsDecimal, isTaxable, isTickedToReceive, quantitySetToReceive
+        items: {},
+
+        //these are the currently receiving totals, calculated based on [items]
+        totalItemsReceiving: 0.0,
+        totalNonTaxable: 0.0,
+        totalTaxable: 0.0,
+        totalFreight: 0.0,
+        totalTax: 0.0,
+        totalDiscount: 0.0,
+        totalFreightTax: 0.0,
+        total: 0.0,
+        totalActualReceived: 0.0,
+        totalNonTaxableActualReceived: 0.0,
+        totalTaxableActualReceived: 0.0,
+        totalTaxActualReceived: 0.0,
+        subTotalActualReceived: 0.0,
+        grandTotalActualReceived: 0.0,
+        totalActualReceivedExtras: 0.0,
+
+        overwriteTax: false,        //if false, flat tax across order. if true, line items sum to tax total
+        overwriteDiscount: false,   //if false, flat discount across order. if true, line items sum to discount total
+
+        resetLineItemTotals: function (clearAll) {
+            this.totalItemsReceiving = 0.0;
+            this.totalNonTaxable = 0.0;
+            this.totalTaxable = 0.0;
+            // We reset the Actual Received back to it's original value
+            this.totalActualReceived = this.totalActualReceivedOriginal;
+            this.totalNonTaxableActualReceived = this.totalNonTaxableActualReceivedOriginal;
+            this.totalTaxableActualReceived = this.totalTaxableActualReceivedOriginal;
+            
+            if (!this.overwriteTax || clearAll) {
+                this.totalTax = 0.0;
+            }
+
+            if (this.overwriteDiscount || clearAll) {
+                this.totalDiscount = 0.0;
+            }
+
+            this.total = 0.0;
+        }
+    };
+
+    var totalsInitialized = false;
+    var lineItemsInitialized = false;
+
+    //these are the totals remaining to receive
+    var remainingOrderTotals = {
+        discountTotal: 0.0,
+        nonTaxableTotal: 0.0,
+        qtyRemaining: 0.0,
+        taxableTotal: 0.0,
+        taxTotal: 0.0,
+        total: 0.0,
+        actualReceived: 0.0
+    };
+
+    //all the column textbox jQuery objects (for setting display values)
+    var controlMappings = {
+        totalReceivedItemsTextbox: {},
+        totalNonTaxableTextbox: {},
+        totalTaxableTextbox: {},
+        totalFreightTextbox: {},
+        totalTaxTextbox: {},
+        totalDiscountTextbox: {},
+        totalFreightTaxTextbox: {},
+        totalTextbox: {},
+        totalActualReceivedItemsTextbox: {},
+        totalActualReceivedNonTaxableTextbox: {},
+        totalActualReceivedTaxTextbox: {},
+
+        recvReceivedItemsTextbox: {},
+        recvNonTaxableTextbox: {},
+        recvTaxableTextbox: {},
+        recvFreightTextbox: {},
+        recvTaxTextbox: {},
+        recvDiscountTextbox: {},
+        recvFreightTaxTextbox: {},
+        recvTotalTextbox: {}
+    };
+
+    //iterates over each line item and sums the line item totals
+    function _updateLineItemTotals() {
+
+        lineItemMap.resetLineItemTotals();
+
+        for (var itemCode in lineItemMap.items) {
+            if (!lineItemMap.items.hasOwnProperty(itemCode)) {
+                continue;
+            }
+
+            var item = lineItemMap.items[itemCode];
+            if (item && item.isTickedToReceive) {
+                var qty = item.quantitySetToReceive;
+                var totalAmount = item.sellPrice * qty;
+                var totalTax = item.taxPercentAsDecimal * totalAmount;
+                var overwriteTax = lineItemMap.overwriteTax;
+
+                lineItemMap.totalItemsReceiving += qty;
+                if (item.isTaxable) {
+                    lineItemMap.totalTaxable += totalAmount;
+
+                    if (!overwriteTax) {
+                        lineItemMap.totalTax += totalTax;
+                    }
+                } else {
+                    lineItemMap.totalNonTaxable += totalAmount;
+                }
+
+                if (lineItemMap.overwriteDiscount) {
+                    lineItemMap.totalDiscount += item.discount;
+                }
+            }
+        }
+
+        lineItemMap.total = lineItemMap.totalFreight + lineItemMap.totalFreightTax + lineItemMap.totalNonTaxable +
+            lineItemMap.totalTax + lineItemMap.totalTaxable - lineItemMap.totalDiscount;
+
+        lineItemMap.subTotalActualReceived = lineItemMap.totalTaxableActualReceived + lineItemMap.totalNonTaxableActualReceived;
+        lineItemMap.grandTotalActualReceived = lineItemMap.subTotalActualReceived + lineItemMap.totalActualReceivedExtras;
+    }
+
+    //validates line item totals when the tab is refreshed
+    //scenario: line items ticked to receive, tab switched to 'order detail', tab switched back to 'receiving'
+    //(need to account for already ticked line items in totals)
+    function _checkStartingLineItemValues() {
+        var $gridLineItems = $('[id$="LabelItemCode"]');
+        var lineItemCount = $gridLineItems.length;
+
+        for (var i = 0; i < lineItemCount; i += 1) {
+            var $row = $gridLineItems.eq(i).closest('tr');
+            var tickedToReceive = context.isRowChecked($row);
+
+            if (tickedToReceive) {
+                var item = context.getItemFromRow($row);
+                context.updateLineItem(tickedToReceive, item.itemCode, item.sellPrice, item.qtyReceived, true);
+            }
+        }
+
+        context.refreshReceivingDetails();
+    }
+
+    //displays all remaining totals, called once directly after initialization (as these values are static until you receive)
+    function _showRemainingOrderDetails() {
+        if (!totalsInitialized) {
+            return;
+        }
+
+        var totals = remainingOrderTotals;
+
+        controlMappings.totalReceivedItemsTextbox.val(totals.qtyRemaining.toFixed(2));
+        controlMappings.totalNonTaxableTextbox.val(totals.nonTaxableTotal.toFixed(2));
+        controlMappings.totalTaxableTextbox.val(totals.taxableTotal.toFixed(2));
+        controlMappings.totalFreightTextbox.val(lineItemMap.totalFreight.toFixed(2));
+        controlMappings.totalTaxTextbox.val(totals.taxTotal.toFixed(2));
+        controlMappings.totalDiscountTextbox.val(totals.discountTotal.toFixed(2));
+        controlMappings.totalFreightTaxTextbox.val(lineItemMap.totalFreightTax.toFixed(2));
+        controlMappings.totalTextbox.val(totals.total.toFixed(2));
+
+        if (lineItemMap.overwriteTax) {
+            controlMappings.recvTaxTextbox.val(totals.taxTotal.toFixed(2));
+        }
+
+        if (!lineItemMap.overwriteDiscount) {
+            controlMappings.recvDiscountTextbox.val(totals.discountTotal.toFixed(2));
+        }
+
+        controlMappings.recvFreightTextbox.val(lineItemMap.totalFreight.toFixed(2));
+        controlMappings.recvFreightTaxTextbox.val(lineItemMap.totalFreightTax.toFixed(2));
+    };
+
+    //retrieves the totals for the remaining order, upon success, retrieves the line items
+    function _initializeRemainingTotals(orderId) {
+        if (!totalsInitialized) {
+            totalsInitialized = true;
+
+            $.ajax({
+                url: "/Areas/Inventory/WebServices/OnlineOrderClassicWebService.asmx/GetOrderRemainingTotals",
+                contentType: "application/json; charset=utf-8",
+                context: context,
+                data: { orderNumber: orderId },
+                error: function () {
+                    alert("Failed to load order line item totals.");
+                    totalsInitialized = false;
+                },
+                success: function (data) {
+
+                    if (data.d) {
+                        var tax = data.d.overwriteTax ? 0 : data.d.taxTotal;
+                        var discount = data.d.overwriteDiscount ? 0 : data.d.discountTotal;
+                        lineItemMap.totalActualReceivedExtras = data.d.freightTotal + data.d.freightTaxTotal - discount;
+
+                        if (data.d.qtyRemaining != 0){
+                            remainingOrderTotals.discountTotal = data.d.discountTotal;
+                            remainingOrderTotals.nonTaxableTotal = data.d.nonTaxableTotal;
+                            remainingOrderTotals.qtyRemaining = data.d.qtyRemaining;
+                            remainingOrderTotals.taxableTotal = data.d.taxableTotal;
+                            remainingOrderTotals.taxTotal = data.d.taxTotal;
+                            remainingOrderTotals.total = data.d.total;
+
+                            lineItemMap.overwriteTax = data.d.overwriteTax;
+                            lineItemMap.overwriteDiscount = data.d.overwriteDiscount;
+                            lineItemMap.totalFreight = data.d.freightTotal;
+                            lineItemMap.totalFreightTax = data.d.freightTaxTotal;
+
+                            if (lineItemMap.overwriteTax) {
+                                lineItemMap.totalTax = data.d.taxTotal;
+                            }
+                            if (!lineItemMap.overwriteDiscount) {
+                                lineItemMap.totalDiscount = data.d.discountTotal;
+                            }
+                        }
+                    }
+
+                    _showRemainingOrderDetails();
+                    _initializeLineitems(orderId);
+                }
+            });
+        }
+    }
+
+    //retrieves the line items that are still left to receive
+    function _initializeLineitems(orderId) {
+        if (!lineItemsInitialized) {
+            lineItemsInitialized = true;
+
+            $.ajax({
+                url: "/Areas/Inventory/WebServices/OnlineOrderClassicWebService.asmx/GetOrderLineItems",
+                contentType: "application/json; charset=utf-8",
+                context: context,
+                data: { orderNumber: orderId },
+                error: function () {
+                    alert("Failed to load order line items.");
+                    lineItemsInitialized = false;
+                },
+                success: function (data) {
+
+                    var dataLength = data.d.length;
+                    if (dataLength !== 0) {
+                        for (var i = 0; i < dataLength; i += 1) {
+                            var dataItem = data.d[i];
+
+                            lineItemMap.items[dataItem.itemCode] = {
+                                itemCode: dataItem.itemCode,
+                                sellPrice: dataItem.sellPrice,
+                                discount: dataItem.discount,
+                                taxPercentAsDecimal: dataItem.taxPercent / 100.0,
+                                isTaxable: dataItem.isTaxable,
+                                isTickedToReceive: false,
+                                quantitySetToReceive: dataItem.qtyRemainingToReceive,
+                                shippedQty: dataItem.ShippedQuantity 
+                            };
+
+                            lineItemMap.totalActualReceived += dataItem.ShippedQuantity;
+                            // Seperate Taxable and Non-Taxable values
+                            if (dataItem.isTaxable) {
+                                lineItemMap.totalTaxableActualReceived += dataItem.ShippedQuantity * dataItem.sellPrice;
+                            }
+                            else{
+                                lineItemMap.totalNonTaxableActualReceived += dataItem.ShippedQuantity * dataItem.sellPrice;
+                            }
+
+                            var itemTax = (dataItem.taxPercent / 100.0) * (dataItem.ShippedQuantity * dataItem.sellPrice);
+                            lineItemMap.totalTaxActualReceived += itemTax;
+                            lineItemMap.totalActualReceivedExtras += itemTax;
+                        }
+                        lineItemMap.totalActualReceivedOriginal = lineItemMap.totalActualReceived;
+                        lineItemMap.totalNonTaxableActualReceivedOriginal = lineItemMap.totalNonTaxableActualReceived;
+                        lineItemMap.totalTaxableActualReceivedOriginal = lineItemMap.totalTaxableActualReceived;
+                        
+                        _checkStartingLineItemValues();
+                        _updateLineItemTotals();
+                    }
+
+                    this.refreshReceivingDetails();
+                }
+            });
+        }
+    }
+
+    context.isRowChecked = function ($row) {
+        return $row.find('input[id$="CheckBoxChecked"]:checked').length > 0;
+    }
+
+    //true if remaining order totals and line items have been retrieved
+    context.isInitialized = function () {
+        return totalsInitialized && lineItemsInitialized;
+    }
+
+    //
+    // Entry Point
+    //
+    context.init = function (orderId, mappings) {
+
+        if (this.isInitialized()) {
+            return;
+        }
+
+        $.extend(controlMappings, mappings);
+
+        _initializeRemainingTotals(orderId);
+    };
+
+    //updates a line item values (if something changes in the receive grid, this is used to keep internal model in sync)
+    context.updateLineItem = function (tickedToReceive, itemCode, sellPrice, qtyToReceive, differRefreshOfTotals) {
+        if (!lineItemsInitialized) {
+            return;
+        }
+
+        var item = lineItemMap.items[itemCode];
+
+        if (item) {
+            item.isTickedToReceive = tickedToReceive;
+            item.sellPrice = sellPrice;
+            item.quantitySetToReceive = qtyToReceive;
+        }
+
+        if (!differRefreshOfTotals) {
+            _updateLineItemTotals();
+            this.refreshReceivingDetails();
+        }
+    };
+
+    //displays currently receiving totals
+    context.refreshReceivingDetails = function () {
+        if (!lineItemsInitialized) {
+            return;
+        }
+
+        controlMappings.recvReceivedItemsTextbox.val(lineItemMap.totalItemsReceiving.toFixed(2));
+        controlMappings.recvNonTaxableTextbox.val(lineItemMap.totalNonTaxable.toFixed(2));
+        controlMappings.recvTaxableTextbox.val(lineItemMap.totalTaxable.toFixed(2));
+        // Update 'Actual Received' controls here
+        controlMappings.totalActualReceivedItemsTextbox.val(lineItemMap.totalActualReceived.toFixed(2));
+        controlMappings.totalActualReceivedNonTaxableTextbox.val(lineItemMap.totalNonTaxableActualReceived.toFixed(2));
+        controlMappings.totalActualReceivedTaxableTextbox.val(lineItemMap.totalTaxableActualReceived.toFixed(2));
+        controlMappings.totalActualReceivedTextbox.val(lineItemMap.subTotalActualReceived.toFixed(2));
+        controlMappings.grandTotalActualReceivedTextbox.val(lineItemMap.grandTotalActualReceived.toFixed(2));
+        controlMappings.totalActualReceivedExtrasTextbox.val(lineItemMap.totalActualReceivedExtras.toFixed(2));
+
+        if (!lineItemMap.overwriteTax) {
+            controlMappings.recvTaxTextbox.val(lineItemMap.totalTax.toFixed(2));
+        }
+
+        if (lineItemMap.overwriteDiscount) {
+            controlMappings.recvDiscountTextbox.val(lineItemMap.totalDiscount.toFixed(2));
+        }
+
+        controlMappings.recvTotalTextbox.val(lineItemMap.total.toFixed(2));
+    }
+
+    //builds an item based on the fields in the given row
+    context.getItemFromRow = function ($row) {
+        var sellPrice = $row.find('input[id$="TextBoxSellPriceItem"]').first().val();
+        var receivedQty = $row.find('input[id$="TextBoxReceivedQty1"]').first().val();
+        var itemCode = $row.find('[id$="LabelItemCode"]').first().text();
+        
+        var item = {
+            itemCode: itemCode,
+            qtyReceived: parseFloat(receivedQty),
+            sellPrice: parseFloat(sellPrice)
+        };
+
+        return item;
+    }
+
+})(window.document, window);
+
+$(document).ready(function () {
+
+    //header/footer 'check all' checkboxes of receive grid
+    var $chbHeaderCheckAll = $('input[id$="CheckBoxReceiveAllHeader"]');
+    var $chbFooterCheckAll = $('input[id$="CheckBoxReceiveAllFooter"]');
+
+    //if all our checkboxes are ticked we need to tick the header/footer 'check all' checkboxes (and vice-versa)
+    function handleAllCheckBoxesTicked(checkbox) {
+        var allTicked = true;
+
+        var $lineItemCheckBoxes = $(checkbox).closest('tbody').find('[id$="CheckBoxChecked"]');
+        var numCheckBoxes = $lineItemCheckBoxes.length;
+
+        for (var i = 0; i < numCheckBoxes; i += 1) {
+            var $checkbox = $lineItemCheckBoxes.eq(i);
+
+            if (!$checkbox.prop("checked")) {
+                allTicked = false;
+                break;
+            }
+        }
+
+        $chbFooterCheckAll.prop("checked", allTicked);
+        $chbHeaderCheckAll.prop("checked", allTicked);
+    }
+
+    //a header/footer 'check all' checkbox was ticked so update checkboxes
+    function clickAll(event) {
+        var $target = $(event.target);
+        var checked = event.target.checked;
+
+        if ($target === $chbHeaderCheckAll) {
+            $chbFooterCheckAll.prop("checked", checked);
+        } else {
+            $chbHeaderCheckAll.prop("checked", checked);
+        }
+
+        var $lineItemCheckBoxes = $target.closest('table').find('[id$="CheckBoxChecked"]');
+        var numCheckBoxes = $lineItemCheckBoxes.length;
+
+        for (var i = 0; i < numCheckBoxes; i += 1) {
+            var $checkbox = $lineItemCheckBoxes.eq(i);
+
+            if ($checkbox.prop("checked") !== checked) {
+                $checkbox.trigger('click');
+            }
+        }
+    }
+
+    $chbHeaderCheckAll.on('click', clickAll);
+    $chbFooterCheckAll.on('click', clickAll);
+
+    //tick control to toggle items 'receiving' state
+    $('input[id$="CheckBoxChecked"]').change(function () {
+        var tickedToReceive = this.checked;
+
+        updateLineItem(this, tickedToReceive);
+
+        handleAllCheckBoxesTicked(this);
+    });
+
+    //current sell price of item, quantity to receive of item
+    $('input[id$="TextBoxSellPriceItem"], input[id$="TextBoxReceivedQty1"]').on('blur', function (event) {
+        updateLineItem(this);
+    });
+
+    function updateLineItem(element, tickedToReceive) {
+        var $row = $(element).closest('tr')
+        var item = onlineOrderClassicScope.receivingTotalsCalculator.getItemFromRow($row);
+
+        if (tickedToReceive === undefined) {
+            tickedToReceive = onlineOrderClassicScope.receivingTotalsCalculator.isRowChecked($row);
+        }
+
+        onlineOrderClassicScope.receivingTotalsCalculator.updateLineItem(tickedToReceive, item.itemCode, item.sellPrice, item.qtyReceived, false);
+    }
+});

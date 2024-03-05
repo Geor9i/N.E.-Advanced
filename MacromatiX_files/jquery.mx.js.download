@@ -1,0 +1,33 @@
+﻿// Global jQuery extensions.
+// NOTE: Do not add non-namespaced extensions here unless they are generic and applicable to any and all jQuery objects.
+// When possible, ensure that any added extensions are chainable. Exceptions would be extensions that return straight values.
+(function ($, window, document, undefined) {
+    $.fn.toggleDisable = function (flag) {
+        var length = this.length;
+        for (var i = 0; i < length; i++) {
+            var current = this[i];
+            var currentFlag = (flag === undefined)
+                ? current.getAttribute('disabled')
+                : flag;
+
+            (currentFlag)
+                ? current.setAttribute('disabled', 'disabled')
+                : current.removeAttribute('disabled');
+        }
+
+        return this;
+    };
+
+    $.fn.enable = function () {
+        return this.removeAttr('disabled');
+    };
+
+    $.fn.disable = function () {
+        return this.attr('disabled', 'disabled');
+    };
+
+    $.fn.id = function (index) {
+        var item = $(this[(index === undefined || isNaN(index)) ? 0 : index]);
+        return (item) ? (item.attr('id') || "") : "";
+    };
+})(jQuery, window, document);

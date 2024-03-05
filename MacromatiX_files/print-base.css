@@ -1,0 +1,14 @@
+﻿div.left-content-bg,
+div.left-content,
+div.header
+{
+    display:none;
+}
+
+div.right-content
+{
+    padding: 0px;
+}
+
+div.print-only { display:block; }
+div.print-hide { display: none; }

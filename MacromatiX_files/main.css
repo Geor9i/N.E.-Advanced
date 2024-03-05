@@ -1,0 +1,610 @@
+﻿/* RESETS / FIX'S */
+body, html, form
+{
+    margin: 0px;
+    padding: 0px;
+    /*font-family: Arial;*/    
+    height: 100%;
+}
+.masterForm {
+    min-width: 800px;
+}
+img { border: none; }
+.RadTabStrip .rtsLevel { clear: none !important; }
+div.clear
+{
+    width: auto;
+    clear: both;
+    line-height: 1px;
+    height: 1px;
+}
+
+/* stop textboxes styled with Form decorator resizing on hover*/
+.rfdTextbox.RadForm_Default INPUT[type='text']
+{    
+    padding-left:4px !important;
+}
+
+/* HEADINGS */
+h1.mxHeader
+{
+    font-family:Arial;
+    font-size:medium;
+    font-weight:bold;
+}
+
+/* HEADER */
+
+div.header 
+{
+    position: relative;
+    font-family:Arial;
+    font-size:8pt;
+    min-width: 800px;
+    z-index: 50;
+}
+
+div.banner div.banner-info
+{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: auto;
+    left: 238px;
+}
+
+div.banner div.banner-info div.top
+{
+    border-bottom: 3px #fff solid;
+    padding: 16px 3px 6px 3px;
+    font-family: Arial;
+    font-size: x-small;
+}
+div.banner div.banner-info div.top span.right { text-align: right;  }
+
+div.main-menu
+{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    right: 0px;
+}
+
+div.container
+{
+    position: relative;
+    min-height: 100%;
+    _height: 100%;
+    margin-top: -101px;    
+}
+
+	.left-content
+	{
+		position:absolute;		
+		left: 0px;
+		top: 100px;
+		width: 166px;
+		padding-top: 20px;
+		z-index: 30;
+	}
+    .right-content
+    {
+        padding-left: 206px;
+        padding-top: 120px;
+        padding-right: 15px;
+    }
+    
+    .left-content-bg
+    {
+		position:absolute;
+		left: 0px;
+		top: 0px;
+		bottom: 0px;
+		width: 166px;
+		z-index: 10;
+        min-height: 351px;
+	}
+	
+	.left-content-fg
+    {
+        position:absolute;
+		left: 166px;
+		top: 0px;
+		bottom: 0px;
+		width: 1000px;		
+	    display:none;
+	}
+	
+	/* toggle Workflow */
+	.left-content.workflow
+    {
+        width: 230px;
+        background-color: White;        
+    }
+    
+    .right-content.workflow
+    {
+        padding-left: 270px;
+    }
+    
+    /* toggle Collapsed */
+    
+    .left-content.collapsed
+    {
+        width:0px;      
+    }
+    
+    .left-content-bg.collapsed
+    {
+        display:none;
+    }     
+    
+    .left-content-fg.collapsed
+	{
+	    display: block;	   		   
+	}   
+    
+    .right-content.collapsed
+    {
+        padding-left: 50px;
+    }
+    
+    .nav-pageviews.collapsed
+    {
+        display:none;
+    }  
+    
+    .nav-pins
+    {
+        display: block;
+        text-align:right;
+        padding-right:5px;
+        border-style:none;
+        padding-top:5px;        
+    }
+    
+    .nav-pins.collapsed
+    {
+        display:none;
+    }	
+
+
+/* Print only is turned off, and turned on during printing... */
+div.print-only { display:none; }
+
+/* AJAX LOADING */
+div.loading-panel { }
+div.loading-panel div.background
+{
+    background: transparent url(images/108.gif) center center no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 91000;
+}
+
+/* AJAX LOADING */
+div.scheduler-loading-panel { }
+div.scheduler-loading-panel div.background
+{
+    background: transparent url(images/Scheduler_Progress.gif) center center no-repeat;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    z-index: 91000;
+}
+
+/* TABLE STYLING */
+table.generic-table
+{
+    border-collapse: collapse;
+    border-spacing: none;
+    width: 99%;
+	color: #000000;
+	border: solid 1px Silver;
+    font-family: Arial;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+}
+table.generic-table thead tr
+{
+}
+table.generic-table thead th
+{
+	background-color: #e6e9de;
+    text-align: left;
+    font-size: normal;
+    padding: 3px 5px;
+}
+table.generic-table tbody
+{
+}
+table.generic-table tbody tr.odd td
+{
+    background: #fff;
+}
+table.generic-table tbody tr td
+{
+	background-color: #f4f4f4;
+	color: #000000;
+	font-size: small;
+    padding: 2px 4px;
+}
+table.generic-table tbody tr td.hover,
+table.generic-table tbody tr td.selected
+{
+	background-color: #e4dad6;
+}
+table.generic-table tfoot tr td { padding: 2px 4px; }
+
+table.align-right tr td
+{
+    text-align: right;
+}
+
+/* FIELDSET STYLING - NORMAL */
+fieldset
+{
+    padding: 10px  !important;
+    margin-bottom: 5px  !important;
+    border:none !important;
+}
+fieldset ol
+{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+fieldset ol li
+{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+fieldset.fieldsetWithBorder
+{
+    border: 1px solid #000000  !important;
+    padding: 5px  !important;
+    margin-bottom: 5px  !important;
+}
+
+fieldset.fieldsetWithLightBorder {
+border: 1px solid #828282 !important;
+color: #333 !important;
+padding: 5px  !important;
+margin-bottom: 5px  !important;
+}
+
+fieldset.fixed
+{
+}
+fieldset.fixed li
+{
+    margin: 3px 0px;
+    clear: both;
+}
+fieldset.fixed li label
+{
+    display: -moz-inline-box;
+	display: inline-block;
+    float: left;
+    width: 120px;
+    line-height: 21px;
+}
+fieldset.fixed li span.no-width label
+{
+    width: auto;
+    display: inline;
+}
+fieldset.fixed li label.big
+{
+    display: block;
+    float: left;
+    width: 250px;
+    line-height: 21px;
+}
+
+/* FIELDSET STYLING */
+fieldset.inline-fieldset
+{
+    font-family: arial;
+    font-size: 13px;
+    padding: 10px;
+}
+fieldset.inline-fieldset ol
+{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+fieldset.inline-fieldset ol li
+{
+    display: inline;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+fieldset.inline-fieldset ol li.space
+{
+    margin-left: 20px;
+}
+
+/* FIELDSET 2-COLUMN */
+fieldset.loyalty-scheme
+{
+}
+
+fieldset.loyalty-scheme input.short
+{
+	width:75px !important;
+}
+fieldset.loyalty-scheme select.short
+{
+	width:150px !important;
+}
+
+fieldset.two-column div.left
+{
+    width:400px;
+    float:left;
+}
+fieldset.two-column div.right
+{
+	margin-left:5px;
+    width:405px;
+    float:left;
+}
+div.two-column-noformat div.left
+{
+    width:400px;
+    float:left;
+}
+div.two-column-noformat div.right
+{
+	margin-left:5px;
+    width:405px;
+    float:left;
+}
+fieldset.two-column
+{
+    font-family: arial;
+    font-size: 13px;
+    padding: 10px;
+    min-width: 850px;
+}
+fieldset.two-column ol
+{
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+fieldset.two-column ol li
+{
+    list-style: none;
+    margin: 3px 0px;
+    padding: 0px;
+    clear: both;
+}
+fieldset.two-column ol li input.text, fieldset.two-column ol li input[type='text']
+{
+    width:250px;
+}
+fieldset.two-column ol li textarea
+{
+    width:250px;
+}
+fieldset.two-column
+{
+    
+}
+
+/* MULTI PAGE STYLING */
+
+.multi-page
+{
+}
+
+.multi-page .page-view
+{
+    border: 1px #828282 solid;
+    border-top: none;
+    padding: 10px;
+}
+
+/* DEFAULT FORM STYLES */
+div.align-buttons
+{
+    text-align: left;
+}
+
+/* RAD TOP NAVIGATION */
+.RadMenu_MxMenuSection 
+{
+    height: 20px !important;
+    /*position: absolute !important;
+    bottom: 0px !important;
+    left: 0px !important;*/
+}
+.RadMenu_MxMenuSection .rmText, 
+.RadMenu_MxMenuSection .rmLink 
+{
+    text-align:center !important;
+    line-height:19px !important;
+    height:20px !important;
+    width:125px !important;
+    display: block !important;
+    padding: 0 !important;
+    cursor:pointer !important;
+}
+
+
+/* RAD LEFT NAVIGATION */
+.mxMenuGroup a
+{
+    text-decoration:none;
+}
+.mxMenuGroup .rpLink 
+{
+    padding: 13px 0 0 0 !important;
+    display: block !important;
+}
+.mxMenuGroup .rpRootGroup,
+.mxMenuGroup .rpOut,
+.mxMenuGroup .rpLink 
+{
+    border: none !important;
+}
+/*
+.mxMenuGroup .mxMenuItem {
+    height:20px !important;
+}*/
+
+.mxMenuGroup {
+    padding:8px !important;
+}
+.mxMenuGroup ul.rpGroup .rmLink
+{
+    width: 146px !important;
+    padding: 2px !important;
+    display: block; 
+    cursor: pointer;
+    margin: 0px !important;
+}
+.mxMenuGroup ul.rpGroup .rmText
+{
+    width: 121px !important;
+    padding: 0px !important;
+    margin: 0px 0px 0px 25px !important;
+}
+
+.nav-tabs
+{
+    position: absolute;
+    top: 65px;
+    right: -26px;
+    width: 26px;
+}
+
+/* table styling */
+table.scheme-level-flags
+{
+	font-family: Arial;
+	font-size: small;
+	color: Black;
+	border-top:solid 1px black;
+	border-left:solid 1px black;
+	border-spacing: none;
+	border-collapse: collapse;
+}
+
+table.scheme-level-flags td
+{
+	width:110px;
+	border-right:solid 1px black;
+	border-bottom:solid 1px black;
+	text-align:center;
+}
+
+table.scheme-level-flags td.left
+{
+	text-align:left !important;
+}
+
+table.scheme-level-flags tr.alt
+{
+	background-color:#E4E4E4;
+}
+
+table.scheme-level-flags thead
+{
+	background-color:Black;
+	color:White;
+}
+
+/* Helpful styles */
+.clearboth
+{
+    clear:both;
+}
+.clearleft
+{
+    clear:left;
+}
+.clearright
+{
+    clear:right;
+}
+.no-padding
+{
+    padding:0px !important;
+}
+.no-padding-right
+{
+    padding-right:0px !important;
+}
+.no-margin
+{
+    margin:0px !important;
+}
+.no-margin-right
+{
+    margin-right:0px !important;
+}
+.no-border
+{
+    border:0px !important;
+}
+.DescriptionTextarea
+{
+    width:170px;
+    height:70px;
+    padding:5px;
+}
+
+
+/* radcombo */
+.rcbInput {
+    font-size: xx-small  !important;
+}
+.rcbItem {
+    font-size: xx-small;
+}
+.rcbList {
+    font-size: xx-small;
+}
+
+.rcbInput::-ms-clear {
+    display: none;
+}
+
+.riTextBox {
+    font-size: xx-small !important;
+    font-family: Arial !important;
+}
+
+select { 
+    font-size: x-small !important;
+    font-family: Arial !important;
+    height: 22px;
+}
+
+button, input[type="button"], input[type="submit"] { 
+    font-size: xx-small !important;
+    font-family: Arial !important;
+    height: 22px;
+}
+
+/* DO NOT REMOVE AS THIS IS USED TO DISABLE TELERIK STYLING ONLY WHERE NEEDED */
+.legacydropdown {
+    height: 21px  !important;
+    font-size: xx-small !important;
+    font-family: Arial !important;
+    
+}

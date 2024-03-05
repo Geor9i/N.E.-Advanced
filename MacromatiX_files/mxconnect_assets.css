@@ -1,0 +1,383 @@
+.ico_mx_logo
+{
+    background-image: url(/Images/MxConnect/MxLogo.PNG);
+	text-align: right;
+}
+
+.ico_customers, .ico_customers_selected, .ico_workforce, .ico_workforce_selected,
+.ico_workflow, .ico_workflow_selected, .ico_financial, .ico_financial_selected,
+.ico_operations, .ico_operations_selected, .ico_inventory, .ico_inventory_selected,
+.ico_setup, .ico_setup_selected, .ico_reporting, .ico_reporting_selected,
+.ico_help, .ico_logout
+{
+	background-repeat: no-repeat;
+	background-position-x: center;
+	background-position-y: 10px;
+}
+
+.sn_customers, .sn_workforce, .sn_financial, .sn_operations, .sn_inventory,
+.sn_setup, .sn_reporting
+{
+	background-repeat: no-repeat;
+	background-position-y: -3px;
+}
+
+/*** Customers ***/
+.ico_customers
+{
+    background-image: url(/Images/MxConnect/customers_icon_normal.PNG);
+}
+.ico_customers_selected
+{
+    background-image: url(/Images/MxConnect/customers_icon_selected.PNG);
+}
+.sn_customers
+{
+    background-image: url(/Images/MxConnect/customers_sub.PNG);
+}
+/*** Workforce ***/
+.ico_workforce
+{
+    background-image: url(/Images/MxConnect/workforce_icon_normal.PNG);
+}
+.ico_workforce_selected
+{
+    background-image: url(/Images/MxConnect/workforce_icon_selected.PNG);
+}
+.sn_workforce
+{
+    background-image: url(/Images/MxConnect/workforce_sub.PNG);
+}
+
+/*** Workflow ***/
+.ico_workflow
+{
+    background-image: url(/Images/MxConnect/workflow_icon_normal.PNG);
+}
+.ico_workflow_selected
+{
+    background-image: url(/Images/MxConnect/workflow_icon_selected.PNG);
+}
+
+/*** Financial ***/
+.ico_financial
+{
+    background-image: url(/Images/MxConnect/financial_icon_normal.PNG);
+}
+.ico_financial_selected
+{
+    background-image: url(/Images/MxConnect/financial_icon_selected.PNG);
+}
+.sn_financial
+{
+    background-image: url(/Images/MxConnect/financial_sub.PNG);
+}
+/*** Operations ***/
+.ico_operations
+{
+    background-image: url(/Images/MxConnect/operations_icon_normal.PNG);
+}
+.ico_operations_selected
+{
+    background-image: url(/Images/MxConnect/operations_icon_selected.PNG);
+}
+.sn_operations
+{
+    background-image: url(/Images/MxConnect/operations_sub.PNG);
+}
+/*** Inventory ***/
+.ico_inventory
+{
+    background-image: url(/Images/MxConnect/inventory_icon_normal.PNG);
+}
+.ico_inventory_selected
+{
+    background-image: url(/Images/MxConnect/inventory_icon_selected.PNG);
+}
+.sn_inventory
+{
+    background-image: url(/Images/MxConnect/inventory_sub.PNG);
+}
+/*** Reporting ***/
+.ico_reporting
+{
+    background-image: url(/Images/MxConnect/reporting_icon_normal.PNG);
+}
+.ico_reporting_selected
+{
+    background-image: url(/Images/MxConnect/reporting_icon_selected.PNG);
+}
+.sn_reporting
+{
+    background-image: url(/Images/MxConnect/reports_sub.PNG);
+}
+/*** Setup ***/
+.ico_setup
+{
+    background-image: url(/Images/MxConnect/setup_icon_normal.PNG);
+}
+.ico_setup_selected
+{
+    background-image: url(/Images/MxConnect/setup_icon_selected.PNG);
+}
+.sn_setup
+{
+    background-image: url(/Images/MxConnect/setup_sub.PNG);
+}
+/*** Help ***/
+.ico_help
+{
+	background-image: url(/Images/MxConnect/help_icon_normal.PNG);
+}
+/*** Logout ***/
+.ico_logout
+{
+    background-image: url(/Images/MxConnect/logout_icon_normal.PNG);
+}
+/*** Misc ***/
+.sn_arrow
+{
+    background-image: url(/Images/MxConnect/sn_arrow.PNG);
+	background-repeat: no-repeat;
+	background-position-x: center;
+	background-position-y: center;
+}
+/*#endregion*/
+
+/*** Coloring ***/
+.bgclr_header
+{
+    background-color: #2b3d4f;
+}
+
+ .hi_bgclr_customers
+{
+    background-color: #D44344;
+}
+.bgclr_customers
+{
+    background-color: #C0392B; /* Pomegranate */
+}
+
+.hi_bgclr_financial
+{
+    background-color: #2ECC71; /* Emerland */
+}
+.bgclr_financial
+{
+    background-color: #27AE60; /* Nephritis */
+}
+
+.hi_bgclr_inventory
+{
+    background-color: #F1C40F; /* Sunflower */
+}
+.bgclr_inventory
+{
+    background-color: #F39C12; /* Orange */
+}
+
+.hi_bgclr_operations
+{
+    background-color: #1ABC9C; /* Turquoise */
+}
+.bgclr_operations
+{
+    background-color: #16A085; /* Green Sea */
+}
+
+.hi_bgclr_reporting
+{
+    background-color: #9B59B6; /* Amethyst */
+}
+.bgclr_reporting
+{
+    background-color: #8E44AD; /* Wisteria */
+}
+
+.hi_bgclr_setup
+{
+    background-color: #95A5A6; /* Concrete */
+}
+.bgclr_setup
+{
+    background-color: #7F8C8D; /* Asbestos */
+}
+
+.hi_bgclr_workflow
+{
+    background-color: #34495E; /* Wet Asphalt */
+}
+.bgclr_workflow
+{
+    background-color: #343434 !important;
+}
+
+.hi_bgclr_workforce
+{
+    background-color: #3498D8; /* Petermann River */
+}
+.bgclr_workforce
+{
+    background-color: #2980B9; /* Belize Hole */
+}
+
+.bgclr_help
+{
+	background-color: #959FA0;
+}
+
+.bgclr_logout
+{
+	background-color: #AAB3B4;
+}
+
+.bgclr_button
+{
+	background-color: #EBEDEE;
+}
+
+.bgclr_white
+{
+	background-color: #FFFFFF;
+}
+
+.txtclr_white
+{
+    color: #FFFFFF;
+}
+
+.mxconnect_header_info 
+{
+	color: white;	
+	font-family: 'Arial', sans-serif;
+	font-size: 8pt;
+	overflow: visible;
+	white-space: nowrap;
+	position: absolute;
+	top: 0;
+	right: 0;
+	text-align: right;
+	z-index: 105;
+	height: 35px;
+}
+
+.mxconnect_header_info_sitename
+{
+	text-align: left;
+	color: White !important;	
+	font-size: 12pt;
+	font-weight: bold;
+	padding-top: 10px;
+	padding-left: 10px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 105;
+}
+
+.mxconnect_master_menu_version
+{
+	font-family: 'Arial', sans-serif;
+	font-weight: 100;
+	font-size: 8pt;
+	color: #A2A9AA;
+	padding-top: 10px;
+	text-align: center;
+}
+
+.poppnl_workflow .mxconnect_master_menu_version
+{
+	text-align: left;
+	padding-left: 12px;
+}
+
+.menu_workflow_tab
+{
+    cursor: pointer;   
+    font-family: Arial, Sans-Serif;
+    height: 25px; 
+    text-align: left;
+	width: 100px;
+	background-color: #EBEDEE;
+}
+
+.poppnl_workflow
+{
+	position: relative;
+	left: 0px;
+	top: 0px !important;
+	height: 100%;
+	z-index: 101;
+	background-color: #EBEDEE;
+}
+
+.menu_button_container
+{
+	position: absolute;
+	top: 25px !important;
+	left: 0;
+}
+
+.poppnl_workflow_content
+{
+	padding: 3px 12px;
+}
+
+.mxconnect_header_logo
+{
+    background-image: url(/Images/MxConnect/mxlogo.png);
+	background-repeat: no-repeat;
+	background-position-x: 50%;
+	background-position-y: 50%;
+}
+
+.mxconnect_header_info_session
+{
+	font-family: Sans-Serif;
+	font-size: 12px;
+	font-weight: bold;
+	margin-right: 10px;
+	margin-top: 2px;
+}
+
+.mxconnect_header_info_username
+{
+	font-family: Sans-Serif;
+	font-size: 12px;
+	font-weight: bold;
+	color: #b3b3b3;
+	margin-right: 10px;
+	margin-top: 2px;
+}
+
+.mx_connect_header_info_button
+{
+	margin-top: 5px;
+	background-image: url(/Images/menu-icon-black.png);
+	background-repeat: no-repeat;
+	background-position-x: 5px;
+	background-position-y: 50%;
+    vertical-align: middle;
+	float: left;
+	width: 90px;
+}
+
+.mxconnect_master_menu_button_padding_workflow
+{
+	width: 5px;
+	height: 25px;
+	float: left;
+	background-color: #2b3d4f;
+}
+
+.menu_workflow_tab_header
+{
+	float: left;
+	margin-left: 25px;
+}
+
+.content-frame-mxconnect
+{
+	text-align: right;
+}

@@ -1,0 +1,406 @@
+﻿/*NB WE NEED TO REMOVE THE !important AND GET THE CSS LOADING IN THE CORRECT ORDER*/
+
+.rfdGrids .rfdTable th, .rfdGrids .rfdTable td {
+    border: 0;
+    padding: 5px 7px 4px;
+}
+
+.RadForm.rfdHeading h4, .RadForm.rfdHeading h5, .RadForm.rfdHeading h6 {
+    font-weight: bold  !important;
+    margin: 15px 0px  !important;
+    font-size: 0.83em !important;
+}
+
+/* currently used on MMS_Admin_Entity.aspx */
+.RadForm.rfdGrids.defaultDetailsView .rfdTable {
+    border: 0px solid #828282 !important;
+    background-color: transparent !important;
+}
+
+.RadForm.rfdGrids .rfdTable {
+    border: 1px solid #828282 !important;
+    color: #333 !important;
+}
+
+.RadForm.rfdGrids .mxNoTableBorder .rfdTable {
+    border: none !important;
+}
+      
+.RadToolTip .rtShadow .rtCloseButton {
+    right: 0px !important;
+    top: 5px !important;
+}
+
+div.RadGrid .rgHeader  a ,  
+div.RadGrid .GridHeader_SkinName  a  
+{
+       text-decoration: underline ;
+}
+
+/* Add for MMS_Ops_Forecast2.aspx */
+.rgMasterTable {
+    font-family: Arial !important;
+    font-size: xx-small !important;
+    line-height: 16px !important;
+    border: none !important; 
+}
+
+.OptionsMenu {
+    position: absolute ;
+    left: -1000px ;
+    z-index: 110000 ;
+}
+
+.RadGrid .rgHeader, .RadGrid th.rgResizeCol {
+    padding-top: 5px !important;
+    padding-bottom: 4px !important;
+    text-align: center;
+    font-weight: bold !important;
+}
+
+/* Add for MMS_Manager_Recipes.aspx */
+
+.RadTreeView .rtIn {
+    font-size: x-small;
+}
+
+.RadTreeView .rtSelected .rtIn {
+    background-image: none !important;
+    color: black !important;
+} 
+
+.RadTreeView .rtHover .rtIn {
+    background-image: none !important;
+} 
+
+/* END */
+
+/* This applies the correct font to all system buttons */
+html.rfdButton a.rfdSkinnedButton *
+{   
+    Font-Size: XX-Small !important;
+    font-family: Arial !important;
+}
+
+.RadButton .rbDecorated {
+font-family: Arial !important;
+font-size: xx-small !important;
+}
+
+.RadGrid .RadButton *
+{
+    border: none !important;
+}
+
+/* Ensures that the drop down options are visible ontop of a popup */
+.rcbSlide, .RadWindow .rfdSelectBox, .RadWindow .RadCalendarPopup, .rfdSelectBoxDropDown
+{
+    z-index: 300015 !important
+}
+
+/* This is to prevent white padding when using all grey grid */ 
+.RadGrid .rgAltRow td {
+    border-style: none !important;
+}
+
+.RadGrid .rgRow td {
+    border-style: none !important;
+}
+
+.RadButton.hide {
+    display: none !important;
+}
+        
+div.RadTabStripVertical .rtsTxt
+{
+	font-family: Arial;
+    -webkit-transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -o-transform: rotate(90deg);
+    border:0px solid red;
+    white-space:nowrap;
+    display:block;
+    text-align: center;
+    padding: 20px 0px 20px 6px !important;
+    width: 20px;
+    height: auto;
+}
+
+div.RadTabStripVertical .rtsLink,
+div.RadTabStripVertical .rtsIn
+{
+	padding-left: 0;
+    display:block;
+    text-align: center;
+}
+
+div.RadTabStripVertical .rtsOut,
+div.RadTabStripVertical .rtsIn
+{
+    padding: 0px !important;
+}
+div.RadTabStripVertical .height80
+{
+    height: 80px;
+}
+div.RadTabStripVertical .height105
+{
+    height: 105px;
+}
+
+div.RadTabStripVertical .height105WithBorder {
+    height: 105px;
+    border-bottom: 1px solid;
+}
+
+div.RadTabStripVertical .rtsLink.height80 {
+height: 80px !important;
+}
+
+div.RadTabStripVertical .rtsLink.height105 {
+height: 105px !important;
+}
+
+div.RadTabStripVertical .rtsLink,
+div.RadTabStripVertical .rtsIn,
+div.RadTabStripVertical .rtsOut,
+div.RadTabStripVertical .rtsLI
+{
+    display: block;
+    width: 26px;
+}
+
+div.RadTabStripVertical.vertical .rtsTxt
+{
+    -webkit-transform: rotate(0deg) !important;
+    -moz-transform: rotate(0deg) !important;
+    -ms-transform:rotate(0deg);
+    -o-transform: rotate(0deg) !important;
+    padding: 0px 0px 0px 5px !important;
+}
+div.RadTabStripVertical.vertical .rtsLink,
+div.RadTabStripVertical.vertical .rtsIn,
+div.RadTabStripVertical.vertical .rtsOut,
+div.RadTabStripVertical.vertical .rtsLI
+{
+    display: block;
+    width: 100%;
+    padding-right: 5px;
+    border-left-color: red;
+    text-align: left;
+}
+
+/* Tool Bar */
+.RadToolBar_Horizontal span.spacing
+{
+    display: inline-block;
+    padding: 2px;
+}
+.RadGridNoBorderBottom table tr td {
+    border-style: none !important;
+}
+
+/* fix for new telerik calendar */
+.RadScheduler_Default .rsAptContent
+{
+	background:none !important;
+}
+
+
+/* This is to present the same background color as mxGridItem when the row does not cover
+   the entire width of the grid */
+.RadGrid_Default .rgDataDiv {
+    background-color: #f4f4f4;
+}
+
+.RadDropDownList_Default .rddlInner
+{
+    background-color: white !important;
+    background-image: none !important;
+    color: #333333 !important;
+    font-family: Arial !important;
+    font-size: xx-small !important;
+}
+
+.RadDropDownList_Default .rddlInner.rddlFocused
+{
+    background-color:  #efefef !important;
+    color: #333333 !important;
+}
+
+.RadDropDownList_Default .rddlInner.rddlHovered
+{
+    background-color:  #efefef !important;
+    border-color: #888 !important;
+}
+
+.RadForm_Default .rddlPopup_Default
+{
+    font-family: Arial !important;
+    font-size: xx-small !important;
+}
+
+.RadForm_Default .rddlPopup_Default .rddlItemSelected
+{
+    background-color: #efefef !important;
+}
+
+.RadForm_Default .rddlPopup_Default .rddlItemHovered
+{
+    background-color: #efefef !important;
+}
+
+.RadButton.rbToggleButton .rbText {
+    font-size: x-small;
+}
+.rsAptResize {
+    display: none;
+}
+
+.RadMenu_Context .rmGroup div.rmText {
+    padding-top: 0 !important;
+    padding-right: 54px !important;
+    padding-bottom: 0 !important;
+    padding-left: 28px !important;
+    margin-left: 4px !important;
+}
+
+.RadListBox .rlbGroup .rlbSelected { background: #c5c5c5 !important; }
+.RadListBox .rlbGroup .rlbHovered { background: #DFDFDF !important; }
+/* This override applies to ALL dropdownlists */
+.rfdSelectText, .rfdSelectBox, .RadListBox .rlbCheckAllItems *, .RadComboBox .rlbCheckAllItems * { Font-Size: XX-Small !important; font-family: Arial !important; }
+.RadListBox .rlbCheckAllItems *, .RadComboBox .rlbCheckAllItems * { font-weight: bold !important; }
+
+/* As a result of the upgrade to 2017.2.711 */
+.RadDropDownList .rddlFakeInput {
+    line-height: 16px !important;
+}
+
+.rddlSlide {
+    z-index: 7001 !important;
+}
+
+/*
+
+    ONLY KENDO-SPECIFIC STYLES ARE ALLOWED BELOW THE DRAGON!!!! 02:08 AM
+
+                                _/|__
+            _,-------,        _/ -|  \_     /~>.
+         _-~ __--~~/\ |      (  \   /  )   | / |
+      _-~__--    //   \\      \ *   * /   / | ||   
+   _-~_--       //     ||      \     /   | /  /|  
+  ~ ~~~~-_     //       \\     |( " )|  / | || /  
+          \   //         ||    | VWV | | /  ///  
+    |\     | //           \\ _/      |/ | ./ |
+    | |    |// __         _-~         \// |  /
+   /  /   //_-~  ~~--_ _-~  /          |\// /  
+  |  |   /-~        _-~    (     /   |/ / /   
+ /   /           _-~  __    |   |____|/     
+|   |__         / _-~  ~-_  (_______  `\
+|      ~~--__--~ /  _     \        __\)))
+ \               _-~       |     ./  \    
+  ~~--__        /         /    _/     |
+        ~~--___/       _-_____/      /            
+         _____/     _-_____/      _-~             
+      /^<  ___       -____         -____          
+         ~~   ~~--__      ``\--__       ``\
+                    ~~--\)\)\)   ~~--\)\)\)
+
+            RAWR!! RAWR!!! RAWR!!!!
+
+*/
+.k-item, .k-input, .k-dropdown *, .k-button, .store-selector, .employee-selector {
+    font-family: Arial !important;
+    font-size: xx-small !important;
+}
+
+.k-window-title
+{
+    font-family: Arial !important;
+	font-size: medium !important;
+	font-weight: bold !important;
+}
+
+.store-selector, .employee-selector  {
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    border: none !important;
+}
+
+.authroizerRight{
+    float:right;
+    
+}
+.authorizerLeft {
+    float:left;
+}
+
+.k-header-filter-inuse {
+    background-color: #99CCFF !important; 
+}
+
+.dialogError .heading {
+    font-size: 30px;
+}
+
+.dialogError .ui-dialog-titlebar {
+   background-color:#F5A9A9;
+}
+
+.dialogError .ui-dialog, .ui-dialog-content {
+     background-color: #F8E0E0 !important;
+    
+}
+
+.k-query-group {
+    background-image: url('/Images/subgroup.png');
+    background-position: 0 0;
+}
+
+.k-query-grid {
+    border-style: none;
+    border-left-style: solid;
+}
+
+.k-query-grid td {
+    border-style: none;
+}
+
+.k-grid-header .k-header 
+{
+    border-left-style: none;
+    border-style: none;
+}
+ 
+ * + html .k-treeview .k-item, * + html .k-treeview .k-group
+{
+    zoom: 1;
+}
+
+.kendoTreeView
+{
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    margin: 0 0em;
+    position: relative; /*Add this to fixed IE7 overflaw box not working with fixed height*/
+}
+
+.geographicDropDownSelector {
+    display: inline-block;
+}
+
+.dialogConfirm.ui-dialog ,.dialogConfirm.ui-dialog-content {
+     background-color: transparent !important;
+}
+
+.dialogConfirm .message {
+    color: purple;
+    font-weight: bold;
+    font-size: x-small;
+    font-family: Arial;
+    width: auto;
+    min-height: 90px;
+    height: auto;
+}

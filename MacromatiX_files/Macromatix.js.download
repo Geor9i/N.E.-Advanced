@@ -1,0 +1,408 @@
+// MacromatiX Pty Ltd (c) 2005 Global Client Scripting
+
+//Default Functions
+function enterPressed(btn){
+	if (document.all){
+		if (event.keyCode == 13) {
+			event.returnValue=false;
+			event.cancel = true;
+			btn.click();
+		} 
+	}
+}
+
+var handle;
+function popupWindow(url,width,height,scrollbars,centre) {
+	if(arguments.length < 4) { scrollbars = 'no'; }
+	if(handle != null && !handle.closed) {handle.close();}
+	handle = window.open(url,'popup','toolbar=no,location=no,directories=no,status=no,scrollbars='+scrollbars+',resizable=yes,width='+width+',height='+height);
+	handle.focus();
+	if (centre) {
+		handle.left = 200;
+	}
+}
+var menulock = new Array(0,0);
+function menuOn(i) { if(!document.layers) { menulock[i] = 1; showMenu(i); } }
+function menuOver(i) { menulock[i] = 1; }
+function menuOff(i) { menulock[i] = 0; setTimeout("hideMenu("+i+")",100); }
+function showMenu(i) {
+	if (document.all) { document.all["nrlMenu"+i].style.visibility = 'visible'; }
+	else if (document.getElementById) { document.getElementById("nrlMenu"+i).style.visibility = 'visible'; }
+}
+function hideMenu(i) {
+	if(!menulock[i]) {
+		if (document.all) { document.all["nrlMenu"+i].style.visibility = 'hidden'; } 
+		else if (document.getElementById) { document.getElementById("nrlMenu"+i).style.visibility = 'hidden'; }
+	}
+}
+function setMenus() {
+	if (document.all) {
+		if(document.body.clientWidth < 779) { document.all.nrlMenu0.style.left = '137px'; document.all.nrlMenu1.style.left = '137px'; }
+		else { document.all.nrlMenu0.style.left = Math.ceil((document.body.clientWidth)/2)-253 + 'px'; document.all.nrlMenu1.style.left = Math.ceil((document.body.clientWidth)/2)-253 + 'px'; }
+	} else if (document.getElementById) {
+		if(window.innerWidth < 779) { document.getElementById("nrlMenu0").style.left = 137; document.getElementById("nrlMenu1").style.left = 137; }
+		else { document.getElementById("nrlMenu0").style.left = window.innerWidth/2-260; document.getElementById("nrlMenu1").style.left = window.innerWidth/2-260; }
+	}
+}
+
+//Window functions
+function MX_openBrWindow(theURL,winName,features) { 
+  window.open(theURL,winName,features);
+}
+
+function clickshow(num)
+{
+	for (i=1;i<3;i++)
+	{
+		menu=eval("document.all.block"+i+".style");	
+		if (num==i)
+		{
+			if (menu.display=="block")
+			{
+				menu.display="none"; 
+			}
+		else {
+			menu.display="block"; 
+			}
+		}
+	}
+}
+
+// Image functions
+function MX_swapImgRestore() {
+  var i,x,a=document.MX_sr;
+  for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MX_preloadImages() {
+  var d=document; if(d.images){ if(!d.MX_p) d.MX_p=new Array();
+    var i,j=d.MX_p.length,a=MX_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MX_p[j]=new Image; d.MX_p[j++].src=a[i];}}
+}
+
+function MX_findObj(n, d) {
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MX_findObj(n,d.layers[i].document);
+  if(!x && document.getElementById) x=document.getElementById(n); return x;
+}
+
+function MX_swapImage() {
+  var i,j=0,x,a=MX_swapImage.arguments; document.MX_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MX_findObj(a[i]))!=null){document.MX_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+
+function changeImages() {
+	if (document.images) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+//SelectBox Functions
+function selectBox(obj) {
+    obj.select();
+} 
+
+function swapOptions(obj,i,j) {
+	var o = obj.options;
+	var i_selected = o[i].selected;
+	var j_selected = o[j].selected;
+	var temp = new Option(o[i].text, o[i].value, o[i].defaultSelected, o[i].selected);
+	var temp2= new Option(o[j].text, o[j].value, o[j].defaultSelected, o[j].selected);
+	o[i] = temp2;
+	o[j] = temp;
+	o[i].selected = j_selected;
+	o[j].selected = i_selected;
+}
+
+function moveOptionUp(obj){
+	var selectedCount=0;
+	for(i=0;i<obj.options.length;i++){
+		if(obj.options[i].selected){
+			selectedCount++;
+		}
+	}
+	if(selectedCount!=1){
+		return;
+	}
+	var i = obj.selectedIndex;
+	if(i == 0){
+		return;
+	}
+	swapOptions(obj,i,i-1);
+	obj.options[i-1].selected = true;
+}
+
+function moveOptionDown(obj){
+	var selectedCount=0;
+	for(i=0;i<obj.options.length;i++){
+		if(obj.options[i].selected){
+			selectedCount++;
+		}
+	}
+	if(selectedCount != 1){
+		return;
+	}
+	var i = obj.selectedIndex;
+	if(i ==(obj.options.length-1)){
+		return;
+	}
+	swapOptions(obj,i,i+1);
+	obj.options[i+1].selected = true;
+}
+
+function changeColour(listboxname, rowname) { 
+	var listbox = document.getElementById(listboxname);
+	var iSelectedIndex = listbox.selectedIndex;
+	var iSelectedValue = listbox.options[iSelectedIndex].value;
+	var sColour = '';
+	if(iSelectedValue==0){ 
+		sColour = '#ffffff'; 
+	} else {
+		if(iSelectedValue==1) {
+			sColour = '#B8DFB7';
+		} else { 
+			sColour = '#FFE27E'; 
+		}
+	}
+	var tablerow = document.getElementById(rowname);
+	tablerow.style.background = sColour;
+}
+
+function roundOff(value, precision)
+{
+	var result = "0.00";
+	value = ""+Math.round(value * Math.pow(10, precision));  // take the integer part of value*10**precision
+ 	if (value.length > precision)	// more digits in value than in precision (e.g., 999.99)
+	{
+        result = value.substring(0, value.length-precision);
+		if (precision > 0 ) result += ".";
+		result  += value.substring(value.length-precision, value.length);
+	} else {	
+		result = "0.";
+		if (value.length < precision)
+		{
+			for (var i = 0; i < precision - value.length; i++)
+			{
+				result += "0";		// pad fraction with leading zeros
+			}
+		}
+		result += value;
+	}		// end else
+	return result;
+}
+
+//added Ricky Friedlander 10/08/2006 
+//Ensures logon page doesn't load in an ifram
+function checkIfInFrame() {
+	if (self.location!=top.location) {
+		top.location = "MMS_Logon.aspx";	
+	}
+}
+
+// marker request functions
+
+var _httpRequester;
+var _httpCallback;
+
+function proccesMarkerRequestAsync(markerRequest, callback)
+{   
+    var url = "MMS_Stores_Marker_Data.aspx";
+    proccesHttpRequestAsync(url, callback, "markerRequest=" + markerRequest);
+}
+
+function proccesMarkerRequestSync(markerRequest)
+{   
+
+    var url = "MMS_Stores_Marker_Data.aspx";
+    return proccesHttpRequest(url, "markerRequest=" + markerRequest);
+}
+
+
+
+// http request functions
+
+function proccesHttpRequestAsync(url, callback, parameters)
+{   
+    _httpCallback = callback;
+
+    if (!_httpRequester)    
+        _httpRequester = getRequester();
+    if (_httpRequester) {
+        _httpRequester.onreadystatechange = processReqChange;
+        _httpRequester.open("POST", url, true);
+	    _httpRequester.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        _httpRequester.setRequestHeader("Content-length", parameters.length);
+        _httpRequester.setRequestHeader("Connection", "close");
+        _httpRequester.send(parameters);
+    }
+}
+
+function processReqChange() 
+{
+    if (_httpRequester.readyState == 4) //complete
+    {
+        _httpCallback(_httpRequester);
+    }
+}
+
+// synchronous version - will block ui
+function proccesHttpRequest(url, parameters)
+{       
+    if (!_httpRequester)    
+        _httpRequester = getRequester();
+    if (_httpRequester) {
+        _httpRequester.open("POST", url, false);
+	    _httpRequester.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        _httpRequester.setRequestHeader("Content-length", parameters.length);
+        _httpRequester.setRequestHeader("Connection", "close");
+        _httpRequester.send(parameters);
+        return _httpRequester;
+    }
+}
+
+function getRequester()
+{
+    // code for IE
+    if (window.ActiveXObject)
+    {
+      return new ActiveXObject("Microsoft.XMLHTTP")
+    }
+    // firefox, mozilla etc
+    if (window.XMLHttpRequest)
+    {
+        return new XMLHttpRequest()
+    }
+
+    alert("Your browser does not support XMLHTTP.")
+ }
+
+// catch Enter and do nothing
+function catchEnter() {
+    if (event.keyCode == 13) {
+        if (event.preventDefault) {
+            // For modern browsers
+            event.preventDefault();
+        } else {
+            // For IE 10 and before
+            event.cancelBubble = true;
+            event.returnValue = false;            
+        }
+        return false;
+    }
+}
+
+// catch Enter and replace with a tab except if focus is on the submit button
+function catchEnterAndReplace() {
+	if (event.keyCode==13) {
+		if (document.activeElement.type != 'submit') {
+		    event.keyCode=9; 
+		}
+	    return event.keyCode;		            
+    }
+}
+
+// js dictionary
+// see http://rick.measham.id.au/javascript/hash.htm for doco
+function Hash(){
+				for( var i=0; i < arguments.length; i++ )
+					for( n in arguments[i] )
+						if( arguments[i].hasOwnProperty(n) )
+							this[n] = arguments[i][n];
+			}
+
+				// Hash.version = 1.00;	// Original version
+				// Hash.version = 1.01;	// Added ability to initialize in the constructor
+				// Hash.version = 1.02;	// Fixed document bug that showed a non-working example (thanks mareks)
+				Hash.version = 1.03;	// Removed returning this from the constructor (thanks em-dash)
+
+
+				Hash.prototype = new Object();
+
+				Hash.prototype.keys = function(){
+					var rv = [];
+					for( n in this )
+						if( this.hasOwnProperty(n) )
+							rv.push(n);
+					return rv;
+				}
+
+				Hash.prototype.length = function(){
+					return this.keys().length();
+				}
+
+				Hash.prototype.values = function(){
+					var rv = [];
+					for( n in this )
+						if( this.hasOwnProperty(n) )
+							rv.push(this[n]);
+					return rv;
+				}
+
+				Hash.prototype.slice = function(){
+					var rv = [];
+					for( i=0; i < arguments.length; i++ )
+						rv.push(
+							( this.hasOwnProperty( arguments[i] ) )
+								? this[arguments[i]]
+								: undefined
+						);
+					return rv;
+				}
+
+				Hash.prototype.concat = function(){
+					for( var i=0; i < arguments.length; i++ )
+						for( n in arguments[i] )
+							if( arguments[i].hasOwnProperty(n) )
+								this[n] = arguments[i][n];
+					return this;
+				}
+
+
+
+//add a new load event, chaining any previous onload functions
+function addLoadEvent(func) {   
+  var oldonload = window.onload;   
+  if (typeof window.onload != 'function') {   
+    window.onload = func;   
+  } else {   
+    window.onload = function() {   
+      if (oldonload) {   
+        oldonload();   
+      }   
+      func();   
+    }   
+  }   
+}   
+   
+        
+
+// scroll to a given element      
+function scrollToElement(element)
+{
+  var xPos = 0;
+  var yPos = 0;
+              
+   while (element != null)
+   {
+        xPos += element.offsetLeft;
+        yPos += element.offsetTop;
+        element = element.offsetParent;
+    }
+    window.scrollTo(xPos,yPos);
+}
+
+   
+// radwindow
+function GetRadWindow()   
+{   
+    var oWindow = null;   
+    if (window.radWindow) oWindow = window.radWindow; //Will work in Moz in all cases, including clasic dialog   
+    else if (window.frameElement.radWindow) oWindow = window.frameElement.radWindow;//IE (and Moz az well)   
+           
+    return oWindow;   
+}   
+   

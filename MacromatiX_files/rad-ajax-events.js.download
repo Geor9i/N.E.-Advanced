@@ -1,0 +1,7 @@
+﻿Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function(sender, args)
+{
+    //At the end of an ajax request. Set the odd rows.
+    SetOddRowClasses();
+    SetDefaultButtonWidth();
+    if (window.MxSessionTimer) window.MxSessionTimer.extendSession();
+});

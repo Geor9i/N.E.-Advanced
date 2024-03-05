@@ -1,0 +1,187 @@
+﻿(function (window, $, document, Mx, undefined) {
+
+    var comboBox = Mx.ns("Mx.Controls.ComboBox");
+
+    comboBox._state = [];
+
+    comboBox.load = function (sender, eventArgs) {
+        //console.log("Mx.Controls.ComboBox.load");
+        comboBox._state[sender.get_id()] = { text: sender.get_text(), value: sender.get_value() };
+
+        //var inputElt = $(sender.get_inputDomElement());
+
+        //inputElt.keyup(function (e) {
+        //    // On ESC, reset the selection.
+        //    if (e.which == 27) {
+        //        comboBox.resetSelection(sender);
+        //    }
+        //});
+        //inputElt.keydown(function (e) {
+        //    // On SPACEBAR, show the dropdown if it is not showing.
+        //    if (e.which == 32) {
+        //        if (!sender.get_dropDownVisible()) {
+        //            sender.showDropDown();
+        //            event.preventDefault();
+        //        }
+        //    }
+        //});
+    }
+
+    comboBox.selectedIndexChanging = function (sender, eventArgs) {
+        var itemAndValue = (eventArgs.get_item() === null) ? "(null)" : eventArgs.get_item().get_text();
+        //console.log("Mx.Controls.ComboBox.selectedIndexChanging(" + itemAndValue + ")");
+        // Ignore if the newly selected item is null.
+        if (eventArgs.get_item() === null) {
+            eventArgs.set_cancel(true);
+        }
+
+        var state = comboBox._state[sender.get_id()];
+
+        // Ignore if the same value is still selected.
+        if (eventArgs.get_item().get_value() === state.value) {
+            eventArgs.set_cancel(true);
+        }
+
+        state.text = eventArgs.get_item().get_text();
+        state.value = eventArgs.get_item().get_value();
+    }
+
+    comboBox.resetSelection = function (sender) {
+        //console.log("Mx.Controls.ComboBox.resetSelection");
+        if (sender.get_selectedItem() === null
+        || sender.get_text() != sender.get_selectedItem().get_text()) {
+
+            var state = comboBox._state[sender.get_id()];
+
+            // Have to unHighlight currently highlighted item and highlight selected
+            // item; otherwise, hitting ENTER will select the highlighted item!
+            if (sender.get_highlightedItem() !== null) {
+                sender.get_highlightedItem().unHighlight();
+                if (sender.get_selectedItem() !== null) {
+                    sender.get_selectedItem().highlight();
+                }
+            }
+
+            sender.set_text(state.text);
+            sender.set_value(state.value);
+        }
+    }
+
+    comboBox.selectAndHighlightItem = function (item) {
+        //console.log("Mx.Controls.ComboBox.selectAndHighlightItem");
+        if (item !== null) {
+            item.highlight();
+            item.scrollIntoView();
+        }
+    }
+
+    comboBox.dropDownOpening = function (sender, eventArgs) {
+        //console.log("Mx.Controls.ComboBox.dropDownOpening");
+        var state = comboBox._state[sender.get_id()];
+
+        state.itemRequestForDropDownOpening = true;
+
+        var item = sender.get_selectedItem();
+        if (item === null) {
+            item = sender.findItemByText($.trim(sender.get_text()));
+        }
+
+        comboBox.selectAndHighlightItem(item);
+    }
+
+    comboBox.dropDownOpened = function (sender, eventArgs) {
+        //console.log("Mx.Controls.ComboBox.dropDownOpened");
+        var state = comboBox._state[sender.get_id()];
+
+        // If we did not get an item list request during open, force one now.
+        if (state.itemRequestForDropDownOpening) {
+            //console.log("   No item list request during open, forcing one now.");
+            sender.requestItems(sender.get_text(), false);
+        }
+    }
+
+    comboBox.itemsRequesting = function (sender, eventArgs) {
+        //console.log("Mx.Controls.ComboBox.itemRequesting");
+        var context = eventArgs.get_context();
+
+        //console.log("   => Number of items already loaded: " + context["NumberOfItems"]);
+
+        var state = comboBox._state[sender.get_id()];
+
+        state.resetSelectedItem = state.itemRequestForDropDownOpening;
+
+        context["Text"] = $.trim(context["Text"]);
+
+        // We want to return all items when opening the dropdown (fixes issue where only
+        // the current item shows), so clear the text.
+        if (state.itemRequestForDropDownOpening) {
+            context["Text"] = '';
+        }
+
+        var itemRequestFilter = context["Text"];
+
+        // Cancel the request if the request is the same as the last one (would return
+        // the same items).
+        if (state.lastItemRequestFilter === itemRequestFilter) {
+            eventArgs.set_cancel(true);
+
+            // But still call itemsRequested to keep state in sync!
+            comboBox.itemsRequested(sender, eventArgs);
+        }
+
+        state.lastItemRequestFilter = itemRequestFilter;
+        state.itemRequestForDropDownOpening = false;
+    }
+
+    comboBox.itemsRequested = function (sender, eventArgs) {
+        //console.log("Mx.Controls.ComboBox.itemsRequested");
+        var state = comboBox._state[sender.get_id()];
+
+        if (state.resetSelectedItem) {
+            var selectedItem = sender.get_selectedItem();
+            if (selectedItem === null) {
+                selectedItem = sender.findItemByValue(state.value);
+            }
+
+            comboBox.selectAndHighlightItem(selectedItem);
+        }
+
+        state.resetSelectedItem = false;
+    }
+
+    comboBox.filterItems = function(theComboBox, filterText) {
+        var state = comboBox._state[theComboBox.get_id()];
+
+        var totalItems = theComboBox.get_items().get_count();
+        var matchingItems = 0;
+        var item, isMatch;
+
+        for (var index = 0; index < totalItems; index++) {
+            item = theComboBox.get_items().getItem(index);
+            isMatch = item.get_text().indexOf(filterText) !== -1;
+            item.set_visible(isMatch);
+            if (isMatch) {
+                matchingItems++;
+            }
+        }
+
+        // If the "MaxHeight" was declared, ensure that the dropdown height is large enough
+        // to accomodate the matching items, up to the maximum height.
+        if (state.maxHeight && matchingItems > 0) {
+            var itemHeight = $(theComboBox.get_items().getItem(0).get_element()).outerHeight();
+
+            var dropdownArea = $(theComboBox.get_dropDownElement()).find(".rcbScroll");
+            var currentHeight = dropdownArea.height();
+
+            if (currentHeight < (matchingItems * itemHeight)) {
+                dropdownArea.height(Math.min(state.maxHeight, matchingItems * itemHeight));
+            }
+        }
+
+        if (matchingItems > 0) {
+            $(theComboBox.get_moreResultsBoxMessageElement()).html(String.format("Items <b>1</b>-<b>{0}</b> out of <b>{1}</b>", matchingItems, totalItems));
+        } else {
+            $(theComboBox.get_moreResultsBoxMessageElement()).html("<b>No matches</b>");
+        }
+    }
+})(window, window.jQuery, window.document, window.Mx);
