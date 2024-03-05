@@ -6,10 +6,6 @@ Next Order is a web application designed for forecasting and managing product in
 <br>
 **This verson is hosted on Firebase**
 
-## Implementation
-
-This app was designed to work without a server. Simply download all files into a single directory and run from the NextOrder.html
-
 ## Technology Stack
 
     Frontend: HTML, CSS, JavaScript
