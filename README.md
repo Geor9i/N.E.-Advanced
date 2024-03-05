@@ -3,7 +3,8 @@
 ## Overview
 
 Next Order is a web application designed for forecasting and managing product inventory levels based on various parameters such as sales data, delivery schedules, and product specifications.
-This verson is hosted on Firebase
+<br>
+**This verson is hosted on Firebase**
 
 ## Implementation
 
